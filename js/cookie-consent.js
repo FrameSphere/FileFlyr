@@ -1,5 +1,5 @@
 /**
- * DSGVO-konformer Cookie-Banner für FileConvert
+ * DSGVO-konformer Cookie-Banner für Fileflyr
  * Mit Google Consent Mode v2 Integration
  * 
  * WICHTIG: Werbung wird IMMER angezeigt

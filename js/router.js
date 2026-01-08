@@ -1,5 +1,5 @@
 /**
- * FileConvert - URL Router
+ * Fileflyr - URL Router
  * Handles client-side routing for /convert/{slug} URLs
  */
 
@@ -234,7 +234,7 @@ class Router {
      * Show 404 error
      */
     show404(slug) {
-        document.title = '404 - Converter Not Found | FileConvert';
+        document.title = '404 - Converter Not Found | Fileflyr';
         
         // Show homepage but with error message
         this.showHomepage();

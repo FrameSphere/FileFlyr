@@ -1,4 +1,4 @@
-// Core utilities for FileConvert
+// Core utilities for Fileflyr
 
 // File size formatter
 function formatFileSize(bytes) {
@@ -221,4 +221,4 @@ window.createDownloadButton = createDownloadButton;
 window.showError = showError;
 window.cleanupMemory = cleanupMemory;
 
-console.log('✅ FileConvert Core loaded');
+console.log('✅ Fileflyr Core loaded');

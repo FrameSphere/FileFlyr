@@ -1,4 +1,4 @@
-// FileConvert Main JavaScript
+// Fileflyr Main JavaScript
 // Search and Filter Functionality
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -113,6 +113,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Console info
-    console.log('FileConvert loaded successfully');
+    console.log('Fileflyr loaded successfully');
     console.log(`${converterCards.length} converters available`);
 });
