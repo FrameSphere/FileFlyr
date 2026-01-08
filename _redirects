@@ -1,25 +1,17 @@
-# Cloudflare Pages Redirects (Netlify Format)
-# SPA Configuration - All routes serve index.html
+# ===============================
+# Cloudflare Pages Redirects
+# SPA + Static Pages (FIXED)
+# ===============================
 
-# Static HTML pages - MUST BE FIRST to prevent /*catchall
-/impressum.html   /impressum.html   200
-/datenschutz.html /datenschutz.html 200
-/licenses.html    /licenses.html    200
+# ---- Static assets (immer direkt ausliefern)
+#/css/*
+/css/*        /css/:splat        200
+/js/*         /js/:splat         200
+/assets/*    /assets/:splat     200
 
-# Static assets should be served directly (no redirect)
-/css/*    /css/:splat    200
-/js/*     /js/:splat     200
-/assets/* /assets/:splat 200
+# ---- Robots & Sitemap
+/robots.txt   /robots.txt        200
+/sitemap.xml  /sitemap.xml       200
 
-# Robots and sitemap
-/robots.txt   /robots.txt   200
-/sitemap.xml  /sitemap.xml  200
-
-# Clean URLs for static pages (optional - redirect to .html)
-/impressum    /impressum.html    200
-/datenschutz  /datenschutz.html  200
-/licenses     /licenses.html     200
-
-# SPA Fallback - All other routes go to index.html
-# This enables client-side routing for /convert/* URLs
-/*  /index.html  200
+# ---- SPA Fallback (IMMER LETZTE REGEL!)
+/*            /index.html         200
