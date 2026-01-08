@@ -1,0 +1,14 @@
+# .htaccess is NOT used on Cloudflare Pages
+# All routing is handled by _redirects file
+# This file is kept for reference only and is not deployed
+
+# If deploying to Apache server instead, uncomment below:
+# RewriteEngine On
+# RewriteBase /
+# 
+# # Don't rewrite files or directories
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# 
+# # Rewrite everything else to index.html for SPA
+# RewriteRule ^ index.html [L]

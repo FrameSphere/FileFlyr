@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileConvert - Free Online File Converter | 40+ Tools | 100% Private</title>
+    <meta name="description" content="Convert files instantly in your browser. 40+ converters for images, PDFs, audio, video. No upload, complete privacy, 100% free.">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">FileConvert</a>
+            <nav>
+                <a href="/#converters">Converters</a>
+                <a href="/#how">How it works</a>
+                <a href="/#privacy">Privacy</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HOMEPAGE CONTENT -->
+    <div id="homepageContent">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Convert files instantly.<br>Zero uploads.</h1>
+                <p>40+ professional file converters running 100% in your browser. No server uploads, no tracking, no bullshit.</p>
+                
+                <div class="hero-badges">
+                    <div class="badge">
+                        <span class="badge-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+                        <span>100% Private</span>
+                    </div>
+                    <div class="badge">
+                        <span class="badge-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+                        <span>Instant Processing</span>
+                    </div>
+                    <div class="badge">
+                        <span class="badge-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+                        <span>40+ Converters</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ad Placeholder - Top Banner -->
+        <div class="ad-container ad-top-banner">
+            <div class="ad-placeholder ad-leaderboard">
+                <span class="ad-label">Advertisement</span>
+                <div class="ad-placeholder-content">
+                    <span class="desktop-ad">728 x 90</span>
+                    <span class="mobile-ad">320 x 50</span>
+                </div>
+            </div>
+        </div>
+
+        <section id="converters" class="converters">
+            <div class="converters-content">
+                <div class="converters-header">
+                    <h2>Choose Your Converter</h2>
+                    <div class="search-filter">
+                        <input type="text" id="searchInput" placeholder="Search converters..." class="search-box">
+                        <div class="category-filters" id="categoryFilters">
+                            <button class="filter-btn active" data-category="all">All</button>
+                            <button class="filter-btn" data-category="image">Images</button>
+                            <button class="filter-btn" data-category="pdf">PDF</button>
+                            <button class="filter-btn" data-category="audio">Audio</button>
+                            <button class="filter-btn" data-category="video">Video</button>
+                            <button class="filter-btn" data-category="document">Documents</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="converter-grid" id="converterGrid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+
+                <div id="noResults" class="no-results" style="display: none;">
+                    <div class="no-results-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #9ca3af;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    </div>
+                    <h3>No converters found</h3>
+                    <p>Try a different search term or browse all converters.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ad Placeholder - Mid Content -->
+        <div class="ad-container ad-mid-content">
+            <div class="ad-placeholder ad-medium-rectangle">
+                <span class="ad-label">Advertisement</span>
+                <div class="ad-placeholder-content">300 x 250</div>
+            </div>
+        </div>
+
+        <section id="how" class="how-it-works">
+            <div class="how-content">
+                <h2>How It Works</h2>
+                <p class="section-subtitle">Simple, fast, and 100% private</p>
+                
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Select Your Files</h3>
+                            <p>Choose the files you want to convert. Drag & drop or click to browse.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Choose Options</h3>
+                            <p>Adjust quality, size, or other settings for your conversion.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Download Results</h3>
+                            <p>Get your converted files instantly. Everything happens in your browser.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="privacy" class="privacy-section">
+            <div class="privacy-content">
+                <h2>Your Privacy is Our Priority</h2>
+                <p class="section-subtitle">All processing happens locally. Your files never leave your device.</p>
+                
+                <div class="privacy-grid">
+                    <div class="privacy-card">
+                        <div class="privacy-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        </div>
+                        <h3>100% Client-Side</h3>
+                        <p>All conversions happen in your browser using JavaScript. No server uploads, ever.</p>
+                    </div>
+                    
+                    <div class="privacy-card">
+                        <div class="privacy-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <h3>No Tracking</h3>
+                        <p>We don't track your files, conversions, or usage patterns. Your data stays yours.</p>
+                    </div>
+                    
+                    <div class="privacy-card">
+                        <div class="privacy-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        </div>
+                        <h3>Instant Processing</h3>
+                        <p>No waiting for uploads or downloads. Everything is processed instantly in your browser.</p>
+                    </div>
+                </div>
+
+                <div class="privacy-technical">
+                    <h4>How is this possible?</h4>
+                    <div class="tech-items">
+                        <div class="tech-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 6px; color: var(--accent);"><polyline points="20 6 9 17 4 12"/></svg>HTML5 Canvas API for image processing</div>
+                        <div class="tech-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 6px; color: var(--accent);"><polyline points="20 6 9 17 4 12"/></svg>JavaScript libraries (jsPDF, pdf-lib, etc.)</div>
+                        <div class="tech-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 6px; color: var(--accent);"><polyline points="20 6 9 17 4 12"/></svg>Web Audio API for audio conversion</div>
+                        <div class="tech-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 6px; color: var(--accent);"><polyline points="20 6 9 17 4 12"/></svg>Modern browser capabilities</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ad Placeholder - Bottom Banner -->
+        <div class="ad-container ad-bottom-banner">
+            <div class="ad-placeholder ad-leaderboard">
+                <span class="ad-label">Advertisement</span>
+                <div class="ad-placeholder-content">
+                    <span class="desktop-ad">728 x 90</span>
+                    <span class="mobile-ad">320 x 100</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONVERTER PAGE CONTENT (dynamically shown/hidden) -->
+    <div id="converterUI" class="converter-page" style="display: none;">
+        <div class="converter-box">
+            <h1 id="converterTitle">Converter</h1>
+            <p class="subtitle" id="converterSubtitle">Convert your files</p>
+
+            <!-- Drop Zone -->
+            <div id="dropZone" class="drop-zone">
+                <div class="drop-content">
+                    <div class="drop-icon" id="converterIcon">📁</div>
+                    <div class="drop-text">Drag & Drop files here</div>
+                    <div class="drop-subtext">or click to browse</div>
+                </div>
+            </div>
+
+            <input type="file" id="fileInput" multiple style="display: none;">
+
+            <!-- Preview Area -->
+            <div id="previewArea" class="preview-area" style="display: none;">
+                <h3>Selected Files (<span id="fileCount">0</span>)</h3>
+                <div id="fileList" class="image-list">
+                    <!-- Files will be listed here -->
+                </div>
+            </div>
+
+            <!-- Options Area -->
+            <div id="optionsArea" class="options-area" style="display: none;">
+                <h3>Conversion Options</h3>
+                <div id="optionsContent" class="options-grid">
+                    <!-- Options will be populated by converter module -->
+                </div>
+                <button id="convertBtn" class="convert-btn">Convert Files</button>
+            </div>
+
+            <!-- Progress Area -->
+            <div id="progressArea" class="progress-area" style="display: none;">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
+                </div>
+                <p id="progressText">Processing...</p>
+            </div>
+
+            <!-- Download Area -->
+            <div id="downloadArea" class="download-area" style="display: none;">
+                <div class="success-icon">✓</div>
+                <h3>Conversion Complete!</h3>
+                <div id="downloadButtons"></div>
+                <button id="resetBtn" class="reset-btn">Convert More Files</button>
+            </div>
+
+            <!-- Post Conversion Ad -->
+            <div id="postConversionAd" class="ad-container ad-post-conversion" style="display: none;">
+                <div class="ad-placeholder ad-large-rectangle">
+                    <span class="ad-label">Advertisement</span>
+                    <div class="ad-placeholder-content">336 x 280</div>
+                </div>
+            </div>
+
+            <!-- Privacy Notice -->
+            <div class="privacy-notice">
+                <p><strong>🔒 100% Private:</strong> All files are processed locally in your browser. Nothing is uploaded to any server.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <div class="logo">FileConvert</div>
+                    <p>Professional file conversion tools.<br>100% free, 100% private.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Popular Tools</h4>
+                        <a href="/convert/png-to-jpg">PNG to JPG</a>
+                        <a href="/convert/jpg-to-png">JPG to PNG</a>
+                        <a href="/convert/heic-to-jpg">HEIC to JPG</a>
+                        <a href="/convert/img-to-pdf">Image to PDF</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <a href="/#how">How it works</a>
+                        <a href="/#privacy">Privacy</a>
+                        <a href="/#converters">All Converters</a>
+                        <a href="/licenses.html">Open Source Licenses</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <nav style="margin-bottom: 16px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="/impressum.html" style="color: var(--text-secondary); text-decoration: none; font-size: 14px;">Impressum</a>
+                    <span style="color: var(--text-tertiary);">·</span>
+                    <a href="/datenschutz.html" style="color: var(--text-secondary); text-decoration: none; font-size: 14px;">Datenschutz</a>
+                    <span style="color: var(--text-tertiary);">·</span>
+                    <a href="/licenses.html" style="color: var(--text-secondary); text-decoration: none; font-size: 14px;">Lizenzen</a>
+                </nav>
+                <p>&copy; 2026 FileConvert powered by <a href="https://frame-sphere.vercel.app/" style="text-decoration: none; color: var(--text-tertiary);">FrameSphere</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie-Banner (DSGVO-konform) -->
+    <script src="/js/cookie-consent.js"></script>
+    
+    <script src="/js/core.js"></script>
+    
+    <!-- Icon System -->
+    <script type="module">
+        import { ICONS } from '/js/icons.js';
+        window.ICONS = ICONS;
+    </script>
+    
+    <!-- Router (MUST BE LOADED FIRST) -->
+    <script type="module" src="/js/router.js"></script>
+    
+    <!-- Homepage Script (only loads if on homepage) -->
+    <script type="module">
+        import { getConvertersByCategory, searchConverters } from '/js/converter-registry.js';
+
+        // Only run homepage logic if we're on homepage
+        if (window.location.pathname === '/' || window.location.pathname === '') {
+            // Populate converter grid
+            function populateConverterGrid() {
+                const grid = document.getElementById('converterGrid');
+                if (!grid) return;
+                
+                try {
+                    const converters = getConvertersByCategory('all');
+                    console.log(`Loading ${converters.length} converters...`);
+                    
+                    grid.innerHTML = '';
+                    
+                    converters.forEach(converter => {
+                        const card = document.createElement('a');
+                        card.href = `/convert/${converter.slug}`;
+                        card.className = 'converter-card';
+                        card.setAttribute('data-category', converter.category);
+                        
+                        const badgesHTML = converter.badges && converter.badges.length > 0
+                            ? converter.badges.map(badge => 
+                                `<span class="card-badge ${badge}">${badge}</span>`
+                              ).join('')
+                            : '';
+                        
+                        const iconName = converter.icon;
+                        const iconSVG = window.ICONS[iconName] || window.ICONS.file;
+                        
+                        card.innerHTML = `
+                            <div class="card-icon">${iconSVG}</div>
+                            <h3>${converter.h1}</h3>
+                            <p>${converter.subtitle}</p>
+                            ${badgesHTML}
+                        `;
+                        
+                        grid.appendChild(card);
+                    });
+                    
+                    console.log('✅ Converters loaded successfully!');
+                } catch (error) {
+                    console.error('❌ Error loading converters:', error);
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', populateConverterGrid);
+            } else {
+                populateConverterGrid();
+            }
+
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            const noResults = document.getElementById('noResults');
+            const grid = document.getElementById('converterGrid');
+
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value;
+                    const results = query ? searchConverters(query) : getConvertersByCategory('all');
+                    
+                    const cards = grid.querySelectorAll('.converter-card');
+                    let visibleCount = 0;
+
+                    cards.forEach(card => {
+                        const slug = card.href.split('/').pop();
+                        const visible = results.some(r => r.slug === slug);
+                        card.style.display = visible ? 'block' : 'none';
+                        if (visible) visibleCount++;
+                    });
+
+                    noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+                });
+            }
+
+            // Category filter
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const category = btn.dataset.category;
+                    const cards = grid.querySelectorAll('.converter-card');
+                    let visibleCount = 0;
+
+                    cards.forEach(card => {
+                        if (category === 'all' || card.dataset.category === category) {
+                            card.style.display = 'block';
+                            visibleCount++;
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+
+                    noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

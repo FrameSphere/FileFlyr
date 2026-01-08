@@ -1,0 +1,15 @@
+# FileConvert - robots.txt
+# Sagt Google welche Seiten gecrawlt werden sollen
+
+User-agent: *
+Allow: /
+
+# Sitemap Location (ersetze mit deiner echten Domain!)
+Sitemap: https://fileConvert.de/sitemap.xml
+
+# Optional: Crawl-Delay für höfliches Crawling
+# Crawl-delay: 1
+
+# Verbiete Crawling von Admin/Private Bereichen (falls vorhanden)
+# Disallow: /admin/
+# Disallow: /private/

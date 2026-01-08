@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Source Licenses</title>
+     <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #0f172a;
+            color: #e5e7eb;
+        }
+
+        header {
+            background: #020617;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .header-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            color: #38bdf8;
+            text-decoration: none;
+        }
+
+        nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        .hero {
+            padding: 48px 24px;
+            background: linear-gradient(180deg, #020617, #0f172a);
+        }
+
+        .hero-content {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .licenses {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
+        }
+
+        .license-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 32px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .license-item {
+            background: #020617;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            padding: 16px 20px;
+        }
+
+        .license-item strong {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .license-meta {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .license-meta a {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+
+        .license-meta a:hover {
+            text-decoration: underline;
+        }
+
+        details {
+            background: #020617;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: #38bdf8;
+            margin-bottom: 8px;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            font-size: 13px;
+            color: #cbd5f5;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            font-size: 13px;
+            color: #64748b;
+        }
+    </style>
+
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">FileConvert</a>
+            <nav>
+                <a href="index.html">← All Converters</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Open Source Licenses</h1>
+            <p class="subtitle">
+                This project uses the following open-source libraries:
+            </p>
+        </div>
+    </section>
+
+    <section class="licenses">
+        <ul class="license-list">
+            <li class="license-item">
+                <strong>jsPDF</strong>
+                <div class="license-meta">
+                    MIT License · <a href="https://github.com/parallax/jsPDF" target="_blank">Repository</a>
+                </div>
+            </li>
+            <li class="license-item">
+                <strong>pdf-lib</strong>
+                <div class="license-meta">
+                    MIT License · <a href="https://github.com/Hopding/pdf-lib" target="_blank">Repository</a>
+                </div>
+            </li>
+            <li class="license-item">
+                <strong>pdf.js</strong>
+                <div class="license-meta">
+                    Apache License 2.0 · <a href="https://github.com/mozilla/pdf.js" target="_blank">Repository</a>
+                </div>
+            </li>
+            <li class="license-item">
+                <strong>heic2any</strong>
+                <div class="license-meta">
+                    MIT License · <a href="https://github.com/alexcorvi/heic2any" target="_blank">Repository</a>
+                </div>
+            </li>
+            <li class="license-item">
+                <strong>lamejs</strong>
+                <div class="license-meta">
+                    LGPL-3.0 License · <a href="https://github.com/zhuker/lamejs" target="_blank">Repository</a>
+                </div>
+            </li>
+            <li class="license-item">
+                <strong>marked</strong>
+                <div class="license-meta">
+                    MIT License · <a href="https://github.com/markedjs/marked" target="_blank">Repository</a>
+                </div>
+            </li>
+            <li class="license-item">
+                <strong>html2canvas</strong>
+                <div class="license-meta">
+                    MIT License · <a href="https://github.com/niklasvh/html2canvas" target="_blank">Repository</a>
+                </div>
+            </li>
+            <li class="license-item">
+                <strong>jspdf-autotable</strong>
+                <div class="license-meta">
+                    MIT License · <a href="https://github.com/simonbengtsson/jsPDF-AutoTable" target="_blank">Repository</a>
+                </div>
+            </li>
+        </ul>
+
+        <!-- LGPL usage clarification -->
+        <details>
+            <summary>LGPL-3.0 Usage Notice (lamejs)</summary>
+            <p>
+                lamejs is used in its unmodified form and is dynamically loaded in the browser.
+                Users may replace this library with a compatible version in accordance with the
+                LGPL-3.0 license.
+            </p>
+        </details>
+
+        <!-- Apache NOTICE -->
+        <details>
+            <summary>NOTICE (pdf.js)</summary>
+            <pre>
+This product includes software developed at
+Mozilla (https://www.mozilla.org/).
+            </pre>
+        </details>
+
+        <!-- MIT License -->
+        <details>
+            <summary>MIT License</summary>
+            <pre>
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+            </pre>
+        </details>
+
+        <!-- Apache 2.0 License -->
+        <details>
+            <summary>Apache License 2.0</summary>
+            <pre>
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+            </pre>
+        </details>
+
+        <!-- LGPL 3.0 License -->
+        <details>
+            <summary>GNU LGPL v3.0</summary>
+            <pre>
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License.
+            </pre>
+        </details>
+
+        <p class="footer-note">
+            License texts are provided to comply with the respective open-source license requirements.
+        </p>
+    </section>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2026 FileConvert powered by <a href="https://frame-sphere.vercel.app/" style="text-decoration: none; color: var(--text-tertiary);">FrameSphere</a></p>
+        </div>
+    </footer>
+</body>
+</html>

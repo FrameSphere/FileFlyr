@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Alt/Archive folder (optional - you can keep it if you want versioned backups)
+# alt/
+
+# Node modules (if you ever add npm)
+node_modules/
+
+# Local development only
+server.py
+
+# Build outputs (if any)
+dist/
+build/

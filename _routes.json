@@ -1,0 +1,5 @@
+{
+  "note": "This file is NOT used on Cloudflare Pages",
+  "reason": "Cloudflare Pages uses _redirects file (Netlify format) instead",
+  "reference": "See _redirects file for routing configuration"
+}
