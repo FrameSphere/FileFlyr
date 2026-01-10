@@ -187,7 +187,8 @@ async function extractAudio(file, format, bitrate) {
         const video = document.createElement('video');
         const url = URL.createObjectURL(file);
         video.src = url;
-        video.muted = true;
+        video.muted = false; // Audio muss hörbar sein für die Aufnahme
+        video.volume = 1.0;
         
         video.onloadedmetadata = async () => {
             try {
@@ -197,31 +198,17 @@ async function extractAudio(file, format, bitrate) {
                 const destination = audioContext.createMediaStreamDestination();
                 source.connect(destination);
                 
-                // Determine MIME type based on format
-                let mimeType;
-                if (format === 'mp3') {
-                    // MP3 support varies by browser
-                    if (MediaRecorder.isTypeSupported('audio/mpeg')) {
-                        mimeType = 'audio/mpeg';
-                    } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
-                        mimeType = 'audio/mp4';
-                    } else {
-                        // Fallback to webm for conversion
-                        mimeType = 'audio/webm';
-                    }
-                } else if (format === 'wav') {
-                    if (MediaRecorder.isTypeSupported('audio/wav')) {
-                        mimeType = 'audio/wav';
-                    } else {
-                        mimeType = 'audio/webm'; // Fallback
-                    }
-                } else if (format === 'ogg') {
-                    if (MediaRecorder.isTypeSupported('audio/ogg')) {
-                        mimeType = 'audio/ogg';
-                    } else {
-                        mimeType = 'audio/webm'; // Fallback
-                    }
+                // Für MP3 nutzen wir WebM und konvertieren später, da Browser MP3 nativ nicht gut unterstützen
+                let mimeType = 'audio/webm;codecs=opus';
+                
+                // Prüfe verfügbare Codecs
+                if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+                    mimeType = 'audio/webm;codecs=opus';
+                } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+                    mimeType = 'audio/webm';
                 }
+                
+                console.log('Using MIME type:', mimeType);
                 
                 const recorder = new MediaRecorder(destination.stream, {
                     mimeType: mimeType,
@@ -235,10 +222,28 @@ async function extractAudio(file, format, bitrate) {
                     }
                 };
                 
-                recorder.onstop = () => {
-                    const blob = new Blob(chunks, { type: mimeType });
-                    URL.revokeObjectURL(url);
-                    resolve(blob);
+                recorder.onstop = async () => {
+                    try {
+                        const webmBlob = new Blob(chunks, { type: mimeType });
+                        
+                        // Wenn MP3 gewünscht, konvertieren wir zu MP3
+                        if (format === 'mp3') {
+                            const mp3Blob = await convertWebMToMp3(webmBlob, bitrate);
+                            URL.revokeObjectURL(url);
+                            resolve(mp3Blob);
+                        } else if (format === 'wav') {
+                            const wavBlob = await convertToWav(webmBlob);
+                            URL.revokeObjectURL(url);
+                            resolve(wavBlob);
+                        } else {
+                            // OGG oder fallback
+                            URL.revokeObjectURL(url);
+                            resolve(webmBlob);
+                        }
+                    } catch (convError) {
+                        URL.revokeObjectURL(url);
+                        reject(convError);
+                    }
                 };
                 
                 recorder.onerror = (e) => {
@@ -248,7 +253,7 @@ async function extractAudio(file, format, bitrate) {
                 
                 // Start recording and play video
                 recorder.start();
-                video.play();
+                await video.play();
                 
                 // Stop recording when video ends
                 video.onended = () => {
@@ -266,6 +271,130 @@ async function extractAudio(file, format, bitrate) {
             reject(new Error('Failed to load video'));
         };
     });
+}
+
+// Konvertiere WebM zu MP3 mit lamejs
+async function convertWebMToMp3(webmBlob, bitrate) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const arrayBuffer = await webmBlob.arrayBuffer();
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            
+            // Prüfe ob lamejs verfügbar ist
+            if (typeof lamejs === 'undefined') {
+                console.warn('lamejs not available, returning WebM');
+                resolve(webmBlob);
+                return;
+            }
+            
+            const channels = audioBuffer.numberOfChannels;
+            const sampleRate = 44100; // Standard MP3 sample rate
+            const mp3enc = new lamejs.Mp3Encoder(channels, sampleRate, bitrate);
+            
+            const mp3Data = [];
+            const sampleBlockSize = 1152;
+            
+            // Get channel data
+            const left = audioBuffer.getChannelData(0);
+            const right = channels > 1 ? audioBuffer.getChannelData(1) : left;
+            
+            // Convert to 16-bit PCM
+            const leftPCM = new Int16Array(left.length);
+            const rightPCM = new Int16Array(right.length);
+            
+            for (let i = 0; i < left.length; i++) {
+                leftPCM[i] = Math.max(-32768, Math.min(32767, left[i] * 32768));
+                rightPCM[i] = Math.max(-32768, Math.min(32767, right[i] * 32768));
+            }
+            
+            // Encode to MP3
+            for (let i = 0; i < leftPCM.length; i += sampleBlockSize) {
+                const leftChunk = leftPCM.subarray(i, i + sampleBlockSize);
+                const rightChunk = rightPCM.subarray(i, i + sampleBlockSize);
+                const mp3buf = mp3enc.encodeBuffer(leftChunk, rightChunk);
+                if (mp3buf.length > 0) {
+                    mp3Data.push(mp3buf);
+                }
+            }
+            
+            // Flush remaining data
+            const mp3buf = mp3enc.flush();
+            if (mp3buf.length > 0) {
+                mp3Data.push(mp3buf);
+            }
+            
+            const blob = new Blob(mp3Data, { type: 'audio/mp3' });
+            resolve(blob);
+        } catch (error) {
+            console.error('MP3 conversion failed:', error);
+            reject(error);
+        }
+    });
+}
+
+// Konvertiere zu WAV
+async function convertToWav(webmBlob) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const arrayBuffer = await webmBlob.arrayBuffer();
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            
+            const wavBlob = audioBufferToWav(audioBuffer);
+            resolve(wavBlob);
+        } catch (error) {
+            console.error('WAV conversion failed:', error);
+            reject(error);
+        }
+    });
+}
+
+// Helper: AudioBuffer zu WAV
+function audioBufferToWav(audioBuffer) {
+    const numChannels = audioBuffer.numberOfChannels;
+    const sampleRate = audioBuffer.sampleRate;
+    const length = audioBuffer.length * numChannels * 2;
+    const buffer = new ArrayBuffer(44 + length);
+    const view = new DataView(buffer);
+    
+    // WAV header
+    writeString(view, 0, 'RIFF');
+    view.setUint32(4, 36 + length, true);
+    writeString(view, 8, 'WAVE');
+    writeString(view, 12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, numChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * numChannels * 2, true);
+    view.setUint16(32, numChannels * 2, true);
+    view.setUint16(34, 16, true);
+    writeString(view, 36, 'data');
+    view.setUint32(40, length, true);
+    
+    // Interleave channels
+    const channels = [];
+    for (let i = 0; i < numChannels; i++) {
+        channels.push(audioBuffer.getChannelData(i));
+    }
+    
+    let offset = 44;
+    for (let i = 0; i < audioBuffer.length; i++) {
+        for (let channel = 0; channel < numChannels; channel++) {
+            const sample = Math.max(-1, Math.min(1, channels[channel][i]));
+            view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+            offset += 2;
+        }
+    }
+    
+    return new Blob([buffer], { type: 'audio/wav' });
+}
+
+function writeString(view, offset, string) {
+    for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+    }
 }
 
 function showDownloads() {

@@ -471,7 +471,8 @@ export const CONVERTER_REGISTRY = {
         icon: 'music',
         badges: ['hot'],
         acceptFormats: ['video/*'],
-        module: 'video-to-audio'
+        module: 'video-to-audio',
+        libraries: ['lamejs']
     }
 };
 
