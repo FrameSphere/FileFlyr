@@ -460,6 +460,18 @@ export const CONVERTER_REGISTRY = {
         badges: [],
         acceptFormats: ['video/*'],
         module: 'video-trim'
+    },
+    
+    'video-to-audio': {
+        title: 'Video to Audio Converter - Extract Audio from Video | Fileflyr',
+        description: 'Extract audio from video files. Convert MP4, MOV, AVI to MP3, WAV, OGG. Fast and free.',
+        h1: 'Video to Audio Converter',
+        subtitle: 'Extract audio from video files and save as MP3, WAV, or OGG.',
+        category: 'video',
+        icon: 'music',
+        badges: ['hot'],
+        acceptFormats: ['video/*'],
+        module: 'video-to-audio'
     }
 };
 
