@@ -726,6 +726,15 @@ footer {
     font-size: 14px;
 }
 
+.footer-bottom-framesphere {
+    text-decoration: none;
+    color: var(--text-tertiary);
+}
+
+.footer-bottom-framesphere:hover {
+    color: var(--text-primary);
+}
+
 /* =================================================================
    Converter Pages
    ================================================================= */
