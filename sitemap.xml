@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Homepage -->
   <url>
-    <loc>https://fileflyr.pages.dev//</loc>
+    <loc>https://fileflyr.pages.dev/</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -10,19 +10,19 @@
   
   <!-- Legal Pages -->
   <url>
-    <loc>https://fileflyr.pages.dev//impressum.html</loc>
+    <loc>https://fileflyr.pages.dev/impressum.html</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//datenschutz.html</loc>
+    <loc>https://fileflyr.pages.dev/datenschutz.html</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//licenses.html</loc>
+    <loc>https://fileflyr.pages.dev/licenses.html</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
@@ -30,43 +30,43 @@
   
   <!-- Image Converters -->
   <url>
-    <loc>https://fileflyr.pages.dev//convert/png-to-jpg</loc>
+    <loc>https://fileflyr.pages.dev/convert/png-to-jpg</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/jpg-to-png</loc>
+    <loc>https://fileflyr.pages.dev/convert/jpg-to-png</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/webp-to-jpg</loc>
+    <loc>https://fileflyr.pages.dev/convert/webp-to-jpg</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/webp-to-png</loc>
+    <loc>https://fileflyr.pages.dev/convert/webp-to-png</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/heic-to-jpg</loc>
+    <loc>https://fileflyr.pages.dev/convert/heic-to-jpg</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/image-compress</loc>
+    <loc>https://fileflyr.pages.dev/convert/image-compress</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/image-resize</loc>
+    <loc>https://fileflyr.pages.dev/convert/image-resize</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -74,43 +74,43 @@
   
   <!-- PDF Converters -->
   <url>
-    <loc>https://fileflyr.pages.dev//convert/img-to-pdf</loc>
+    <loc>https://fileflyr.pages.dev/convert/img-to-pdf</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/jpg-to-pdf</loc>
+    <loc>https://fileflyr.pages.dev/convert/jpg-to-pdf</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/png-to-pdf</loc>
+    <loc>https://fileflyr.pages.dev/convert/png-to-pdf</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/pdf-to-jpg</loc>
+    <loc>https://fileflyr.pages.dev/convert/pdf-to-jpg</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/pdf-to-png</loc>
+    <loc>https://fileflyr.pages.dev/convert/pdf-to-png</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/pdf-merge</loc>
+    <loc>https://fileflyr.pages.dev/convert/pdf-merge</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/pdf-split</loc>
+    <loc>https://fileflyr.pages.dev/convert/pdf-split</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -118,13 +118,13 @@
   
   <!-- Audio Converters -->
   <url>
-    <loc>https://fileflyr.pages.dev//convert/mp3-to-wav</loc>
+    <loc>https://fileflyr.pages.dev/convert/mp3-to-wav</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/wav-to-mp3</loc>
+    <loc>https://fileflyr.pages.dev/convert/wav-to-mp3</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -132,19 +132,19 @@
   
   <!-- Video Converters -->
   <url>
-    <loc>https://fileflyr.pages.dev//convert/mp4-to-webm</loc>
+    <loc>https://fileflyr.pages.dev/convert/mp4-to-webm</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/gif-to-mp4</loc>
+    <loc>https://fileflyr.pages.dev/convert/gif-to-mp4</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fileflyr.pages.dev//convert/mp4-to-gif</loc>
+    <loc>https://fileflyr.pages.dev/convert/mp4-to-gif</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -152,7 +152,7 @@
   
   <!-- Document Converters -->
   <url>
-    <loc>https://fileflyr.pages.dev//convert/txt-to-pdf</loc>
+    <loc>https://fileflyr.pages.dev/convert/txt-to-pdf</loc>
     <lastmod>2026-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
