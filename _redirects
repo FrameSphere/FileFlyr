@@ -9,6 +9,9 @@
 /js/*         /js/:splat         200
 /assets/*    /assets/:splat     200
 
+# ---- Ads.txt
+/ads.txt    /ads.txt     200
+
 # ---- Robots & Sitemap
 /robots.txt   /robots.txt        200
 /sitemap.xml  /sitemap.xml       200
