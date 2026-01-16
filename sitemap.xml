@@ -157,7 +157,5 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
-  <!-- HINWEIS: Ersetze "fileflyr.pages.dev/" mit deiner echten Domain! -->
-  <!-- Füge weitere Converter hinzu wenn du sie implementierst -->
+
 </urlset>
