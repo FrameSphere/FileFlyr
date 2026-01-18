@@ -414,6 +414,18 @@ export const CONVERTER_REGISTRY = {
     // ========================================
     // VIDEO CONVERTERS
     // ========================================
+    'mov-to-mp4': {
+        title: 'MOV to MP4 Converter - Convert QuickTime to MP4 | Fileflyr',
+        description: 'Convert MOV (QuickTime) videos to MP4 format. Universal compatibility for all devices.',
+        h1: 'MOV to MP4 Converter',
+        subtitle: 'Convert QuickTime MOV videos to universal MP4 format.',
+        category: 'video',
+        icon: 'video',
+        badges: ['popular'],
+        acceptFormats: ['video/quicktime', 'video/mov', '.mov'],
+        module: 'mov-to-mp4'
+    },
+    
     'mp4-to-webm': {
         title: 'MP4 to WEBM Converter | Fileflyr',
         description: 'Convert MP4 videos to WEBM format.',
