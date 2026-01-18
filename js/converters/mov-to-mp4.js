@@ -1,10 +1,12 @@
 /**
  * MOV to MP4 Converter
- * Converts MOV videos to MP4 format with H.264 codec
+ * Converts MOV videos to MP4 format using FFmpeg.wasm
  */
 
 let selectedFiles = [];
 let convertedFiles = [];
+let ffmpeg = null;
+let ffmpegLoaded = false;
 
 export async function init() {
     console.log('🎬 MOV to MP4 Converter initialized');
@@ -23,37 +25,25 @@ export async function init() {
     const downloadButtons = document.getElementById('downloadButtons');
     const resetBtn = document.getElementById('resetBtn');
     
-    // Detect supported codecs
-    const supportedCodecs = [];
-    if (MediaRecorder.isTypeSupported('video/mp4;codecs=h264')) {
-        supportedCodecs.push({ value: 'h264', label: 'H.264 (Recommended)' });
-    }
-    if (MediaRecorder.isTypeSupported('video/mp4')) {
-        supportedCodecs.push({ value: 'default', label: 'Browser Default' });
-    }
-    
     // Setup options
-    const codecOptions = supportedCodecs.length > 0
-        ? supportedCodecs.map((c, i) => `<option value="${c.value}" ${i === 0 ? 'selected' : ''}>${c.label}</option>`).join('')
-        : '<option value="default">Browser Default</option>';
-    
     optionsContent.innerHTML = `
         <div class="option">
             <label for="quality">Video Quality</label>
             <select id="quality" class="select-box">
-                <option value="2500000">High (2.5 Mbps)</option>
-                <option value="1500000" selected>Medium (1.5 Mbps)</option>
-                <option value="800000">Low (800 Kbps)</option>
+                <option value="high">High Quality (Original)</option>
+                <option value="medium" selected>Medium Quality (Balanced)</option>
+                <option value="low">Low Quality (Smaller File)</option>
             </select>
         </div>
         <div class="option">
             <label for="codec">Video Codec</label>
             <select id="codec" class="select-box">
-                ${codecOptions}
+                <option value="h264" selected>H.264 (Most Compatible)</option>
+                <option value="h265">H.265/HEVC (Better Compression)</option>
             </select>
         </div>
         <div class="info-box" style="margin-top: 12px; padding: 12px; background: var(--bg-dark); border-radius: 8px; font-size: 13px; color: var(--text-secondary);">
-            <strong>Note:</strong> MP4 with H.264 codec is the most compatible video format for web and mobile devices.
+            <strong>Note:</strong> MP4 with H.264 codec is the most compatible video format for web and mobile devices. First conversion may take longer as FFmpeg loads.
         </div>
     `;
     
@@ -158,9 +148,41 @@ function displayFiles() {
     optionsArea.style.display = 'block';
 }
 
+async function loadFFmpeg() {
+    if (ffmpegLoaded) return;
+    
+    const { FFmpeg } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.7/dist/esm/index.min.js');
+    const { toBlobURL } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.min.js');
+    
+    ffmpeg = new FFmpeg();
+    
+    ffmpeg.on('log', ({ message }) => {
+        console.log(message);
+    });
+    
+    ffmpeg.on('progress', ({ progress }) => {
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        if (progressFill && progressText) {
+            const percent = Math.round(progress * 100);
+            progressFill.style.width = `${percent}%`;
+            progressText.textContent = `Converting... ${percent}%`;
+        }
+    });
+    
+    const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.4/dist/esm';
+    await ffmpeg.load({
+        coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+        wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+    });
+    
+    ffmpegLoaded = true;
+    console.log('✓ FFmpeg loaded');
+}
+
 async function convertFiles() {
-    const bitrate = parseInt(document.getElementById('quality').value);
-    const codecChoice = document.getElementById('codec').value;
+    const quality = document.getElementById('quality').value;
+    const codec = document.getElementById('codec').value;
     
     const optionsArea = document.getElementById('optionsArea');
     const progressArea = document.getElementById('progressArea');
@@ -171,13 +193,28 @@ async function convertFiles() {
     progressArea.style.display = 'block';
     convertedFiles = [];
     
+    // Load FFmpeg if not loaded
+    if (!ffmpegLoaded) {
+        progressText.textContent = 'Loading FFmpeg (first time only)...';
+        progressFill.style.width = '0%';
+        try {
+            await loadFFmpeg();
+        } catch (error) {
+            console.error('FFmpeg loading error:', error);
+            alert('Failed to load FFmpeg: ' + error.message);
+            progressArea.style.display = 'none';
+            optionsArea.style.display = 'block';
+            return;
+        }
+    }
+    
     for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
         progressText.textContent = `Converting ${i + 1} of ${selectedFiles.length}...`;
-        progressFill.style.width = ((i / selectedFiles.length) * 100) + '%';
+        progressFill.style.width = '0%';
         
         try {
-            const blob = await convertToMP4(file, bitrate, codecChoice);
+            const blob = await convertToMP4(file, quality, codec);
             const fileName = file.name.replace(/\.[^/.]+$/, '') + '.mp4';
             convertedFiles.push({ blob, fileName });
         } catch (error) {
@@ -195,102 +232,54 @@ async function convertFiles() {
     }, 500);
 }
 
-async function convertToMP4(file, bitrate, codecChoice) {
-    return new Promise((resolve, reject) => {
-        const video = document.createElement('video');
-        const url = URL.createObjectURL(file);
-        video.src = url;
-        video.preload = 'metadata';
-        video.muted = true;
-        
-        video.onloadedmetadata = () => {
-            try {
-                const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                const ctx = canvas.getContext('2d');
-                
-                const stream = canvas.captureStream(30);
-                
-                // Determine MIME type based on codec choice and support
-                let mimeType;
-                let recorderOptions = { videoBitsPerSecond: bitrate };
-                
-                if (codecChoice === 'h264' && MediaRecorder.isTypeSupported('video/mp4;codecs=h264')) {
-                    mimeType = 'video/mp4;codecs=h264';
-                } else if (MediaRecorder.isTypeSupported('video/mp4')) {
-                    mimeType = 'video/mp4';
-                } else if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
-                    // Fallback: Some browsers support H.264 in WebM container
-                    mimeType = 'video/webm;codecs=h264';
-                } else if (MediaRecorder.isTypeSupported('video/webm')) {
-                    // Last resort: WebM (will need re-encoding to MP4)
-                    mimeType = 'video/webm';
-                } else {
-                    // No MIME type specified - let browser decide
-                    mimeType = null;
-                }
-                
-                if (mimeType) {
-                    recorderOptions.mimeType = mimeType;
-                }
-                
-                console.log('Using codec:', mimeType || 'browser default');
-                
-                const recorder = new MediaRecorder(stream, recorderOptions);
-                
-                const chunks = [];
-                recorder.ondataavailable = (e) => {
-                    if (e.data.size > 0) {
-                        chunks.push(e.data);
-                    }
-                };
-                
-                recorder.onstop = () => {
-                    // Use appropriate MIME type for blob
-                    const blobType = mimeType && mimeType.includes('mp4') ? 'video/mp4' : 'video/webm';
-                    const blob = new Blob(chunks, { type: blobType });
-                    URL.revokeObjectURL(url);
-                    resolve(blob);
-                };
-                
-                recorder.onerror = (e) => {
-                    URL.revokeObjectURL(url);
-                    reject(new Error('Recording failed: ' + e.message));
-                };
-                
-                let frameCount = 0;
-                const maxFrames = Math.floor(video.duration * 30);
-                
-                const drawFrame = () => {
-                    if (!video.ended && !video.paused && frameCount < maxFrames) {
-                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                        frameCount++;
-                        requestAnimationFrame(drawFrame);
-                    } else {
-                        recorder.stop();
-                    }
-                };
-                
-                video.onseeked = () => {
-                    recorder.start();
-                    video.play();
-                    drawFrame();
-                };
-                
-                video.currentTime = 0;
-                
-            } catch (error) {
-                URL.revokeObjectURL(url);
-                reject(error);
-            }
-        };
-        
-        video.onerror = () => {
-            URL.revokeObjectURL(url);
-            reject(new Error('Failed to load video'));
-        };
-    });
+async function convertToMP4(file, quality, codec) {
+    const inputName = 'input.mov';
+    const outputName = 'output.mp4';
+    
+    // Write input file to FFmpeg virtual file system
+    const arrayBuffer = await file.arrayBuffer();
+    await ffmpeg.writeFile(inputName, new Uint8Array(arrayBuffer));
+    
+    // Build FFmpeg command based on quality and codec
+    const args = ['-i', inputName];
+    
+    // Video codec
+    if (codec === 'h265') {
+        args.push('-c:v', 'libx265');
+    } else {
+        args.push('-c:v', 'libx264');
+    }
+    
+    // Quality settings
+    if (quality === 'high') {
+        args.push('-crf', '18');
+    } else if (quality === 'medium') {
+        args.push('-crf', '23');
+    } else {
+        args.push('-crf', '28');
+    }
+    
+    // Additional settings for web compatibility
+    args.push(
+        '-preset', 'medium',
+        '-movflags', '+faststart', // Enable fast start for web playback
+        '-c:a', 'aac',              // Audio codec
+        '-b:a', '128k',             // Audio bitrate
+        outputName
+    );
+    
+    // Execute FFmpeg command
+    await ffmpeg.exec(args);
+    
+    // Read output file
+    const data = await ffmpeg.readFile(outputName);
+    
+    // Clean up
+    await ffmpeg.deleteFile(inputName);
+    await ffmpeg.deleteFile(outputName);
+    
+    // Return as Blob
+    return new Blob([data.buffer], { type: 'video/mp4' });
 }
 
 function showDownloads() {
