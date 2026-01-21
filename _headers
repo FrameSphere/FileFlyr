@@ -1,22 +1,26 @@
-# Default headers for all pages (including homepage with AdSense)
-/*
+# Headers für FileFlyr - Optimiert für AdSense + FFmpeg
+
+# Default headers für Homepage und statische Seiten
+/
   X-Content-Type-Options: nosniff
-  X-Frame-Options: DENY
+  X-Frame-Options: SAMEORIGIN
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
 
-# Special headers for converter pages that use FFmpeg/WebWorkers
+/*.html
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Converter-Seiten mit FFmpeg (benötigen COOP/COEP für SharedArrayBuffer)
 /convert/*
   Cross-Origin-Embedder-Policy: require-corp
   Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Resource-Policy: cross-origin
   X-Content-Type-Options: nosniff
-  X-Frame-Options: DENY
+  X-Frame-Options: SAMEORIGIN
 
 # Sitemap
 /sitemap.xml
   Content-Type: application/xml; charset=utf-8
-
-# Allow external resources for main pages
-/*.html
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-src https://googleads.g.doubleclick.net; worker-src 'self' blob:;
+  X-Robots-Tag: noindex

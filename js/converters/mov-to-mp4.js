@@ -154,9 +154,11 @@ async function loadFFmpeg() {
     console.log('📦 Loading FFmpeg...');
     
     try {
-        // Verwende die neueste stabile Version mit besserem CORS-Support
-        const { FFmpeg } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js');
-        const { fetchFile } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js');
+        // Lade FFmpeg als ESM-Module vom npm CDN
+        const { FFmpeg } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/+esm');
+        const { toBlobURL } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/+esm');
+        
+        console.log('✅ FFmpeg modules imported');
         
         ffmpeg = new FFmpeg();
         
@@ -164,7 +166,7 @@ async function loadFFmpeg() {
             console.log('[FFmpeg]', message);
         });
         
-        ffmpeg.on('progress', ({ progress, time }) => {
+        ffmpeg.on('progress', ({ progress }) => {
             const progressFill = document.getElementById('progressFill');
             const progressText = document.getElementById('progressText');
             if (progressFill && progressText) {
@@ -174,12 +176,19 @@ async function loadFFmpeg() {
             }
         });
         
-        // Load FFmpeg core - verwende CDN ohne strenge CORS-Requirements
-        const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
+        // Load FFmpeg core mit toBlobURL für CORS-Probleme
+        console.log('📥 Loading FFmpeg core...');
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
         
         await ffmpeg.load({
-            coreURL: `${baseURL}/ffmpeg-core.js`,
-            wasmURL: `${baseURL}/ffmpeg-core.wasm`,
+            coreURL: await toBlobURL(
+                `${baseURL}/ffmpeg-core.js`,
+                'text/javascript'
+            ),
+            wasmURL: await toBlobURL(
+                `${baseURL}/ffmpeg-core.wasm`,
+                'application/wasm'
+            ),
         });
         
         ffmpegLoaded = true;
@@ -187,6 +196,11 @@ async function loadFFmpeg() {
         
     } catch (error) {
         console.error('❌ FFmpeg loading failed:', error);
+        console.error('Error details:', {
+            message: error.message,
+            stack: error.stack,
+            name: error.name
+        });
         throw new Error(`Failed to load FFmpeg: ${error.message}`);
     }
 }
@@ -212,7 +226,7 @@ async function convertFiles() {
             await loadFFmpeg();
         } catch (error) {
             console.error('FFmpeg loading error:', error);
-            alert('Failed to load FFmpeg: ' + error.message);
+            alert(`Failed to load FFmpeg: ${error.message}\n\nPlease try refreshing the page or use a different browser.`);
             progressArea.style.display = 'none';
             optionsArea.style.display = 'block';
             return;
