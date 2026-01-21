@@ -151,33 +151,44 @@ function displayFiles() {
 async function loadFFmpeg() {
     if (ffmpegLoaded) return;
     
-    const { FFmpeg } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.7/dist/esm/index.min.js');
-    const { toBlobURL } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.min.js');
+    console.log('📦 Loading FFmpeg...');
     
-    ffmpeg = new FFmpeg();
-    
-    ffmpeg.on('log', ({ message }) => {
-        console.log(message);
-    });
-    
-    ffmpeg.on('progress', ({ progress }) => {
-        const progressFill = document.getElementById('progressFill');
-        const progressText = document.getElementById('progressText');
-        if (progressFill && progressText) {
-            const percent = Math.round(progress * 100);
-            progressFill.style.width = `${percent}%`;
-            progressText.textContent = `Converting... ${percent}%`;
-        }
-    });
-    
-    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
-    await ffmpeg.load({
-        coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-        wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-    });
-    
-    ffmpegLoaded = true;
-    console.log('✓ FFmpeg loaded');
+    try {
+        // Verwende die neueste stabile Version mit besserem CORS-Support
+        const { FFmpeg } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js');
+        const { fetchFile } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js');
+        
+        ffmpeg = new FFmpeg();
+        
+        ffmpeg.on('log', ({ message }) => {
+            console.log('[FFmpeg]', message);
+        });
+        
+        ffmpeg.on('progress', ({ progress, time }) => {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            if (progressFill && progressText) {
+                const percent = Math.min(Math.round(progress * 100), 100);
+                progressFill.style.width = `${percent}%`;
+                progressText.textContent = `Converting... ${percent}%`;
+            }
+        });
+        
+        // Load FFmpeg core - verwende CDN ohne strenge CORS-Requirements
+        const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
+        
+        await ffmpeg.load({
+            coreURL: `${baseURL}/ffmpeg-core.js`,
+            wasmURL: `${baseURL}/ffmpeg-core.wasm`,
+        });
+        
+        ffmpegLoaded = true;
+        console.log('✅ FFmpeg loaded successfully');
+        
+    } catch (error) {
+        console.error('❌ FFmpeg loading failed:', error);
+        throw new Error(`Failed to load FFmpeg: ${error.message}`);
+    }
 }
 
 async function convertFiles() {
@@ -236,6 +247,8 @@ async function convertToMP4(file, quality, codec) {
     const inputName = 'input.mov';
     const outputName = 'output.mp4';
     
+    console.log(`🎬 Converting ${file.name}...`);
+    
     // Write input file to FFmpeg virtual file system
     const arrayBuffer = await file.arrayBuffer();
     await ffmpeg.writeFile(inputName, new Uint8Array(arrayBuffer));
@@ -250,23 +263,26 @@ async function convertToMP4(file, quality, codec) {
         args.push('-c:v', 'libx264');
     }
     
-    // Quality settings
+    // Quality settings (CRF: lower = better quality, higher = smaller file)
     if (quality === 'high') {
-        args.push('-crf', '18');
+        args.push('-crf', '18');  // Near-lossless
     } else if (quality === 'medium') {
-        args.push('-crf', '23');
+        args.push('-crf', '23');  // Good balance
     } else {
-        args.push('-crf', '28');
+        args.push('-crf', '28');  // Smaller files
     }
     
     // Additional settings for web compatibility
     args.push(
-        '-preset', 'medium',
-        '-movflags', '+faststart', // Enable fast start for web playback
-        '-c:a', 'aac',              // Audio codec
+        '-preset', 'medium',       // Encoding speed vs compression
+        '-movflags', '+faststart',  // Enable fast start for web playback
+        '-c:a', 'aac',              // Audio codec (AAC is standard for MP4)
         '-b:a', '128k',             // Audio bitrate
+        '-pix_fmt', 'yuv420p',      // Pixel format for compatibility
         outputName
     );
+    
+    console.log('FFmpeg command:', args.join(' '));
     
     // Execute FFmpeg command
     await ffmpeg.exec(args);
@@ -277,6 +293,8 @@ async function convertToMP4(file, quality, codec) {
     // Clean up
     await ffmpeg.deleteFile(inputName);
     await ffmpeg.deleteFile(outputName);
+    
+    console.log('✅ Conversion complete');
     
     // Return as Blob
     return new Blob([data.buffer], { type: 'video/mp4' });
