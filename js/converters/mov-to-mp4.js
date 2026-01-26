@@ -1,6 +1,6 @@
 /**
  * MOV to MP4 Converter
- * Converts MOV videos to MP4 format using FFmpeg.wasm
+ * Converts MOV videos to MP4 format using FFmpeg.wasm (loaded from unpkg.com CDN)
  */
 
 let selectedFiles = [];
@@ -43,7 +43,7 @@ export async function init() {
             </select>
         </div>
         <div class="info-box" style="margin-top: 12px; padding: 12px; background: var(--bg-dark); border-radius: 8px; font-size: 13px; color: var(--text-secondary);">
-            <strong>Note:</strong> MP4 with H.264 codec is the most compatible video format for web and mobile devices. First conversion may take longer as FFmpeg loads.
+            <strong>Note:</strong> MP4 with H.264 codec is the most compatible video format for web and mobile devices. First conversion loads FFmpeg (~30MB) from CDN - subsequent conversions are instant.
         </div>
     `;
     
@@ -154,9 +154,9 @@ async function loadFFmpeg() {
     console.log('📦 Loading FFmpeg...');
     
     try {
-        // Lade FFmpeg als ESM-Module vom npm CDN
-        const { FFmpeg } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/+esm');
-        const { toBlobURL } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/+esm');
+        // Lade FFmpeg direkt von unpkg.com (funktioniert ohne COEP/COOP)
+        const { FFmpeg } = await import('https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');
+        const { toBlobURL, fetchFile } = await import('https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js');
         
         console.log('✅ FFmpeg modules imported');
         
@@ -176,7 +176,7 @@ async function loadFFmpeg() {
             }
         });
         
-        // Load FFmpeg core mit toBlobURL für CORS-Probleme
+        // Load FFmpeg core von unpkg.com
         console.log('📥 Loading FFmpeg core...');
         const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
         
@@ -188,6 +188,10 @@ async function loadFFmpeg() {
             wasmURL: await toBlobURL(
                 `${baseURL}/ffmpeg-core.wasm`,
                 'application/wasm'
+            ),
+            workerURL: await toBlobURL(
+                `${baseURL}/ffmpeg-core.worker.js`,
+                'text/javascript'
             ),
         });
         
@@ -226,7 +230,7 @@ async function convertFiles() {
             await loadFFmpeg();
         } catch (error) {
             console.error('FFmpeg loading error:', error);
-            alert(`Failed to load FFmpeg: ${error.message}\n\nPlease try refreshing the page or use a different browser.`);
+            alert(`Failed to load FFmpeg: ${error.message}\n\nPlease check your internet connection and try again.`);
             progressArea.style.display = 'none';
             optionsArea.style.display = 'block';
             return;

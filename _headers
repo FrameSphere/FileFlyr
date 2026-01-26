@@ -13,7 +13,54 @@
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
 
-# Converter-Seiten mit FFmpeg (benötigen COOP/COEP für SharedArrayBuffer)
+# FFmpeg Library Dateien (müssen ohne CORP/COEP geladen werden können)
+/lib/*
+  Access-Control-Allow-Origin: *
+  Cross-Origin-Resource-Policy: cross-origin
+  X-Content-Type-Options: nosniff
+
+# FFmpeg-based Converters (NO COEP/COOP - würde externe FFmpeg-Ressourcen blockieren)
+/convert/mov-to-mp4
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+
+/convert/gif-to-mp4
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+
+/convert/mp4-to-gif
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+
+/convert/mp4-to-webm
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+
+/convert/video-to-audio
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+
+/convert/video-trim
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+
+/convert/audio-trim
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+
+/convert/audio-normalize
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+
+/convert/mp3-to-wav
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+
+/convert/wav-to-mp3
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+
+# Non-FFmpeg Converter-Seiten (können COOP/COEP verwenden für bessere Performance)
 /convert/*
   Cross-Origin-Embedder-Policy: require-corp
   Cross-Origin-Opener-Policy: same-origin
