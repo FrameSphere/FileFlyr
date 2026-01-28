@@ -9,11 +9,11 @@ Der MOV to MP4 Converter konnte nicht funktionieren, weil:
 
 ### 1. CSP-Headers angepasst (`_headers`)
 - **FFmpeg-basierte Converter** (mov-to-mp4, gif-to-mp4, etc.) haben jetzt **KEINE** COEP/COOP Headers mehr
-- Dies erlaubt das Laden von externen Ressourcen (unpkg.com)
+- Dies erlaubt das Laden von externen Ressourcen (jsdelivr.net CDN)
 - **Nicht-FFmpeg Converter** behalten COEP/COOP für bessere Performance mit SharedArrayBuffer
 
 ### 2. Code geändert (mov-to-mp4.js)
-- FFmpeg wird jetzt direkt von **unpkg.com CDN** geladen
+- FFmpeg wird jetzt direkt von **jsdelivr.net CDN** geladen (bessere CORS-Unterstützung als unpkg.com)
 - Keine lokalen Dateien mehr erforderlich
 - Versionen:
   - `@ffmpeg/ffmpeg@0.12.10`
@@ -23,10 +23,11 @@ Der MOV to MP4 Converter konnte nicht funktionieren, weil:
 ## Vorteile der neuen Lösung
 
 ✅ **Funktioniert sofort** - Keine Setup-Schritte erforderlich
-✅ **Immer aktuell** - unpkg.com liefert die neuesten stabilen Versionen
-✅ **Zuverlässig** - unpkg.com hat 99.9% Uptime
-✅ **Schnell** - CDN ist weltweit verteilt und gecacht
+✅ **Immer aktuell** - jsdelivr.net liefert die neuesten stabilen Versionen
+✅ **Zuverlässig** - jsdelivr.net hat 99.9% Uptime und bessere CORS-Unterstützung
+✅ **Schnell** - Multi-CDN Netzwerk mit automatischem Failover
 ✅ **Automatisches Caching** - Browser cacht FFmpeg nach dem ersten Laden (~30MB)
+✅ **ESM Support** - Modernes JavaScript mit `+esm` Syntax
 
 ## Was wurde geändert
 
@@ -48,11 +49,13 @@ Der MOV to MP4 Converter konnte nicht funktionieren, weil:
 ```diff
 - const { FFmpeg } = await import('/lib/ffmpeg.js');
 - const { toBlobURL } = await import('/lib/util.js');
-+ const { FFmpeg } = await import('https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');
-+ const { toBlobURL, fetchFile } = await import('https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js');
++ const ffmpegModule = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/+esm');
++ const utilModule = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/+esm');
++ const FFmpeg = ffmpegModule.FFmpeg;
++ const toBlobURL = utilModule.toBlobURL;
 
 - const baseURL = '/lib';
-+ const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
++ const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';
 ```
 
 ## Betroffene Converter
@@ -80,7 +83,7 @@ Wenn du die Ladezeit beim ersten Mal weiter optimieren möchtest:
 
 1. Öffne https://fileflyr.pages.dev/convert/mov-to-mp4
 2. Wähle eine .mov Datei aus (max 500MB)
-3. Beim ersten Mal lädt FFmpeg von unpkg.com (~30MB, dauert 5-15 Sekunden)
+3. Beim ersten Mal lädt FFmpeg von jsdelivr.net (~30MB, dauert 5-15 Sekunden)
 4. Konvertierung startet automatisch
 5. Bei weiteren Konvertierungen ist FFmpeg bereits gecacht = sofort fertig!
 

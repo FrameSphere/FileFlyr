@@ -1,6 +1,6 @@
 /**
  * MOV to MP4 Converter
- * Converts MOV videos to MP4 format using FFmpeg.wasm (loaded from unpkg.com CDN)
+ * Converts MOV videos to MP4 format using FFmpeg.wasm (loaded from jsdelivr.net CDN)
  */
 
 let selectedFiles = [];
@@ -154,9 +154,13 @@ async function loadFFmpeg() {
     console.log('📦 Loading FFmpeg...');
     
     try {
-        // Lade FFmpeg direkt von unpkg.com (funktioniert ohne COEP/COOP)
-        const { FFmpeg } = await import('https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');
-        const { toBlobURL, fetchFile } = await import('https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js');
+        // Lade FFmpeg von jsdelivr.net (bessere CORS-Unterstützung als unpkg)
+        const ffmpegModule = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/+esm');
+        const utilModule = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/+esm');
+        
+        const FFmpeg = ffmpegModule.FFmpeg;
+        const toBlobURL = utilModule.toBlobURL;
+        const fetchFile = utilModule.fetchFile;
         
         console.log('✅ FFmpeg modules imported');
         
@@ -176,9 +180,9 @@ async function loadFFmpeg() {
             }
         });
         
-        // Load FFmpeg core von unpkg.com
+        // Load FFmpeg core von jsdelivr.net
         console.log('📥 Loading FFmpeg core...');
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+        const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';
         
         await ffmpeg.load({
             coreURL: await toBlobURL(
