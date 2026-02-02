@@ -2103,7 +2103,7 @@ export const CONVERTER_CONTENT = {
         ]
     },
 
-    'merge-pdf': {
+    'pdf-merge': {
         sections: [
             {
                 id: 'what-is-merge-pdf',
