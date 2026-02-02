@@ -5,6 +5,7 @@
 
 import { getConverter } from './converter-registry.js';
 import { getIcon } from './icons.js';
+import { getConverterContent, hasContent } from './converter-content.js';
 
 class Router {
     constructor() {
@@ -75,6 +76,58 @@ class Router {
         if (config.libraries) {
             await this.loadLibraries(config.libraries);
         }
+
+        // Load educational content if available
+        this.loadConverterContent(slug);
+    }
+
+    /**
+     * Load educational content for converter
+     */
+    loadConverterContent(slug) {
+        const infoContainer = document.getElementById('converterInfo');
+        if (!infoContainer) return;
+
+        if (!hasContent(slug)) {
+            infoContainer.style.display = 'none';
+            return;
+        }
+
+        const content = getConverterContent(slug);
+        let html = '';
+
+        // Render sections
+        if (content.sections && content.sections.length > 0) {
+            content.sections.forEach(section => {
+                html += `
+                    <div class="info-section" id="${section.id}">
+                        <h2>${section.title}</h2>
+                        ${section.content}
+                    </div>
+                `;
+            });
+        }
+
+        // Render FAQ
+        if (content.faq && content.faq.length > 0) {
+            html += `
+                <div class="faq-section">
+                    <h2>Frequently Asked Questions</h2>
+            `;
+            content.faq.forEach(item => {
+                html += `
+                    <div class="faq-item">
+                        <div class="faq-question">${item.question}</div>
+                        <div class="faq-answer">${item.answer}</div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+        }
+
+        infoContainer.innerHTML = html;
+        infoContainer.style.display = 'block';
+        console.log('✅ Converter content loaded');
     }
 
     /**
@@ -94,9 +147,11 @@ class Router {
     showHomepage() {
         const homepageContent = document.getElementById('homepageContent');
         const converterUI = document.getElementById('converterUI');
+        const converterInfo = document.getElementById('converterInfo');
         
         if (homepageContent) homepageContent.style.display = 'block';
         if (converterUI) converterUI.style.display = 'none';
+        if (converterInfo) converterInfo.style.display = 'none';
     }
 
     /**
