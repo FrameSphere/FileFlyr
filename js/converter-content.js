@@ -1472,7 +1472,7 @@ export const CONVERTER_CONTENT = {
         ]
     },
 
-    'grayscale-converter': {
+    'image-grayscale': {
         sections: [
             {
                 id: 'what-is-grayscale',
@@ -1561,7 +1561,7 @@ export const CONVERTER_CONTENT = {
         ]
     },
 
-    'background-remover': {
+    'remove-bg': {
         sections: [
             {
                 id: 'what-is-background-removal',
@@ -1658,7 +1658,7 @@ export const CONVERTER_CONTENT = {
 
 
 
-    'image-to-pdf': {
+    'img-to-pdf': {
         sections: [
             {
                 id: 'what-is-image-to-pdf',
@@ -2192,7 +2192,7 @@ export const CONVERTER_CONTENT = {
         ]
     },
 
-    'split-pdf': {
+    'pdf-split': {
         sections: [
             {
                 id: 'what-is-split-pdf',
@@ -2380,7 +2380,7 @@ export const CONVERTER_CONTENT = {
         ]
     },
 
-    'text-to-pdf': {
+    'txt-to-pdf': {
         sections: [
             {
                 id: 'what-is-text-to-pdf',
@@ -2941,7 +2941,7 @@ export const CONVERTER_CONTENT = {
         ]
     },
 
-    'audio-trimmer': {
+    'audio-trim': {
         sections: [
             {
                 id: 'what-is-audio-trimmer',
@@ -3021,7 +3021,7 @@ export const CONVERTER_CONTENT = {
         ]
     },
 
-    'audio-normalizer': {
+    'audio-normalize': {
         sections: [
             {
                 id: 'what-is-audio-normalizer',
@@ -3453,7 +3453,7 @@ export const CONVERTER_CONTENT = {
         ]
     },
 
-    'video-trimmer': {
+    'video-trim': {
         sections: [
             {
                 id: 'what-is-video-trimmer',
