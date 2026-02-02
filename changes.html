@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="viMnSLF_Y6opfcGR7XVh2iiPsvyLGfzk1G03qVmXrzc" />
+    <title>Changelog & Updates | FileFlyr</title>
+    <meta name="description" content="Latest updates, new features, and improvements to FileFlyr - your free online file converter.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3654554314003005"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <a href="/" class="logo">FileFlyr</a>
+        <nav>
+            <a href="/">← Home</a>
+        </nav>
+    </div>
+</header>
+
+<section class="legal-page">
+    <div class="legal-content">
+        <h1>Changelog & Updates</h1>
+        <p class="subtitle">Latest features, improvements, and new converters</p>
+
+        <!-- Filter Buttons -->
+        <div class="changes-filters">
+            <button class="filter-btn active" data-type="all">All Updates</button>
+            <button class="filter-btn" data-type="feature">Features</button>
+            <button class="filter-btn" data-type="converter">Converters</button>
+            <button class="filter-btn" data-type="content">Content</button>
+            <button class="filter-btn" data-type="improvement">Improvements</button>
+        </div>
+
+        <!-- Changes will be loaded here -->
+        <div id="changesContainer"></div>
+
+        <div class="legal-notice" style="margin-top: 48px;">
+            <p><strong>Stay Updated:</strong> We're constantly improving FileFlyr. Follow our updates to learn about new converters, features, and improvements!</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-main">
+            <div class="footer-brand">
+                <div class="logo">FileFlyr</div>
+                <p>Professional file conversion tools.<br>100% free, 100% private.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Popular Tools</h4>
+                    <a href="/convert/png-to-jpg">PNG to JPG</a>
+                    <a href="/convert/jpg-to-png">JPG to PNG</a>
+                    <a href="/convert/heic-to-jpg">HEIC to JPG</a>
+                    <a href="/convert/img-to-pdf">Image to PDF</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <a href="/#how">How it works</a>
+                    <a href="/#privacy">Privacy</a>
+                    <a href="/#converters">All Converters</a>
+                    <a href="/licenses.html">Open Source Licenses</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <nav style="margin-bottom: 16px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="/impressum.html" style="color: var(--text-secondary); text-decoration: none; font-size: 14px;">Impressum</a>
+                <span style="color: var(--text-tertiary);">·</span>
+                <a href="/datenschutz.html" style="color: var(--text-secondary); text-decoration: none; font-size: 14px;">Datenschutz</a>
+                <span style="color: var(--text-tertiary);">·</span>
+                <a href="/licenses.html" style="color: var(--text-secondary); text-decoration: none; font-size: 14px;">Lizenzen</a>
+                <span style="color: var(--text-tertiary);">·</span>
+                <a href="/about.html" style="color: var(--text-secondary); text-decoration: none; font-size: 14px;">About</a>
+                <span style="color: var(--text-tertiary);">·</span>
+                <a href="/changes.html" style="color: var(--text-secondary); text-decoration: none; font-size: 14px;">Changelog</a>
+            </nav>
+            <p>&copy; 2026 FileFlyr powered by <a href="https://frame-sphere.vercel.app/" class="footer-bottom-framesphere">FrameSphere</a></p>
+        </div>
+    </div>
+</footer>
+
+<script type="module">
+    import { getAllChanges } from '/js/changes-registry.js';
+
+    const changesContainer = document.getElementById('changesContainer');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+
+    // Type icons and colors
+    const typeConfig = {
+        feature: { icon: '🚀', color: '#6366f1', label: 'New Feature' },
+        converter: { icon: '🔄', color: '#22c55e', label: 'New Converter' },
+        content: { icon: '📝', color: '#8b5cf6', label: 'Content Update' },
+        improvement: { icon: '⚡', color: '#f59e0b', label: 'Improvement' }
+    };
+
+    function renderChanges(filter = 'all') {
+        const changes = getAllChanges();
+        const filtered = filter === 'all' 
+            ? changes 
+            : changes.filter(c => c.type === filter);
+
+        changesContainer.innerHTML = filtered.map(change => {
+            const config = typeConfig[change.type] || typeConfig.feature;
+            const tags = change.tags.map(tag => 
+                `<span class="change-tag">${tag}</span>`
+            ).join('');
+
+            return `
+                <div class="change-entry" data-type="${change.type}">
+                    <div class="change-header">
+                        <div class="change-type" style="background: ${config.color}20; color: ${config.color};">
+                            <span class="change-icon">${config.icon}</span>
+                            <span>${config.label}</span>
+                        </div>
+                        <div class="change-date">${formatDate(change.date)}</div>
+                    </div>
+                    <h2 class="change-title">${change.title}</h2>
+                    <div class="change-description">
+                        ${change.description}
+                    </div>
+                    <div class="change-tags">
+                        ${tags}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+
+    // Filter functionality
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const type = btn.dataset.type;
+            renderChanges(type);
+        });
+    });
+
+    // Initial render
+    renderChanges();
+</script>
+
+</body>
+</html>
