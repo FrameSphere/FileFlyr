@@ -7,15 +7,14 @@
     <title>Changelog & Updates | FileFlyr</title>
     <meta name="description" content="Latest updates, new features, and improvements to FileFlyr - your free online file converter.">
     <meta name="robots" content="index, follow">
-    
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3654554314003005"
      crossorigin="anonymous"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-    
-    <link rel="stylesheet" href="/css/style.css">
 
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
@@ -38,12 +37,17 @@
             <button class="filter-btn active" data-type="all">All Updates</button>
             <button class="filter-btn" data-type="feature">Features</button>
             <button class="filter-btn" data-type="converter">Converters</button>
-            <button class="filter-btn" data-type="content">Content</button>
             <button class="filter-btn" data-type="improvement">Improvements</button>
+            <button class="filter-btn" data-type="bugfix">Bugfixes</button>
+            <button class="filter-btn" data-type="content">Content</button>
         </div>
 
         <!-- Changes will be loaded here -->
-        <div id="changesContainer"></div>
+        <div id="changesContainer">
+            <div id="cl-loading" style="text-align:center;padding:48px;color:var(--text-secondary,#888)">
+                Loading updates…
+            </div>
+        </div>
 
         <div class="legal-notice" style="margin-top: 48px;">
             <p><strong>Stay Updated:</strong> We're constantly improving FileFlyr. Follow our updates to learn about new converters, features, and improvements!</p>
@@ -93,8 +97,78 @@
 </footer>
 
 <script>
-    // Redirect to the new /changelog page
-    window.location.replace('/changelog');
+(function () {
+    const HQ_API = 'https://webcontrol-hq-api.karol-paschek.workers.dev';
+    const SITE_ID = 'fileflyr';
+
+    const container = document.getElementById('changesContainer');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+
+    const typeConfig = {
+        feature:     { icon: '🚀', color: '#6366f1', label: 'New Feature' },
+        converter:   { icon: '🔄', color: '#22c55e', label: 'New Converter' },
+        improvement: { icon: '⚡', color: '#f59e0b', label: 'Improvement' },
+        bugfix:      { icon: '🐛', color: '#ef4444', label: 'Bug Fix' },
+        content:     { icon: '📝', color: '#8b5cf6', label: 'Content Update' },
+    };
+
+    let allEntries = [];
+    let currentFilter = 'all';
+
+    function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function renderEntries(filter) {
+        const filtered = filter === 'all' ? allEntries : allEntries.filter(e => e.type === filter);
+
+        if (filtered.length === 0) {
+            container.innerHTML = '<div style="text-align:center;padding:48px;color:var(--text-secondary,#888)">No updates yet.</div>';
+            return;
+        }
+
+        container.innerHTML = filtered.map(entry => {
+            const cfg = typeConfig[entry.type] || typeConfig.feature;
+            return `
+                <div class="change-entry" data-type="${entry.type}">
+                    <div class="change-header">
+                        <div class="change-type" style="background:${cfg.color}20;color:${cfg.color};">
+                            <span class="change-icon">${cfg.icon}</span>
+                            <span>${cfg.label}</span>
+                        </div>
+                        <div class="change-date">${formatDate(entry.created_at)}</div>
+                    </div>
+                    <h2 class="change-title">${entry.title}</h2>
+                    ${entry.description ? `<div class="change-description">${entry.description}</div>` : ''}
+                    ${entry.version ? `<div class="change-tags"><span class="change-tag">v${entry.version}</span></div>` : ''}
+                </div>
+            `;
+        }).join('');
+    }
+
+    async function loadChangelog() {
+        try {
+            const res = await fetch(`${HQ_API}/api/changelog/published?site_id=${SITE_ID}`);
+            if (!res.ok) throw new Error('API error ' + res.status);
+            allEntries = await res.json();
+            renderEntries(currentFilter);
+        } catch (e) {
+            container.innerHTML = '<div style="text-align:center;padding:48px;color:var(--text-secondary,#888)">Could not load updates. Please try again later.</div>';
+        }
+    }
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.type;
+            renderEntries(currentFilter);
+        });
+    });
+
+    loadChangelog();
+})();
 </script>
 
 </body>
