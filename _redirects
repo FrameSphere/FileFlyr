@@ -15,8 +15,8 @@
 /robots.txt   /robots.txt        200
 /sitemap.xml  /sitemap.xml       200
 
-# ---- Changelog (neue Seite + Redirects von alter URL)
-/changelog    /changelog.html    200
+# ---- Changelog (Clean URLs handled by Cloudflare Pages natively)
+# /changelog serves changelog.html automatically - no rule needed!
 /changes      /changelog         301
 /changes.html /changelog         301
 
