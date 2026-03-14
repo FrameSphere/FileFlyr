@@ -15,10 +15,11 @@
 /robots.txt   /robots.txt        200
 /sitemap.xml  /sitemap.xml       200
 
-# ---- Changelog (Clean URLs handled by Cloudflare Pages natively)
-# /changelog serves changelog.html automatically - no rule needed!
-/changes      /changelog         301
-/changes.html /changelog         301
+# ---- Changelog (Übersicht MUSS vor der [slug]-Function geschützt werden)
+/changelog        /changelog.html    200
+/changelog/       /changelog.html    200
+/changes          /changelog         301
+/changes.html     /changelog         301
 
 # ---- SPA Fallback (IMMER LETZTE REGEL!)
 /*            /index.html        200

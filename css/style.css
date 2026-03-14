@@ -1576,9 +1576,12 @@ footer {
 }
 
 .change-entry:hover {
-    border-color: var(--border-hover);
+    border-color: var(--primary);
     transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
 }
+a.change-entry { cursor: pointer; }
+a.change-entry:hover .change-title { color: var(--primary); transition: color 0.2s; }
 
 .change-header {
     display: flex;

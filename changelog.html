@@ -131,9 +131,12 @@
         }
 
         container.innerHTML = filtered.map(entry => {
-            const cfg = typeConfig[entry.type] || typeConfig.feature;
+            const cfg  = typeConfig[entry.type] || typeConfig.feature;
+            const href = entry.slug ? `/changelog/${entry.slug}` : null;
+            const tag  = href ? 'a' : 'div';
+            const attr = href ? `href="${href}"` : '';
             return `
-                <div class="change-entry" data-type="${entry.type}">
+                <${tag} ${attr} class="change-entry" data-type="${entry.type}" style="${href ? 'display:block;text-decoration:none;color:inherit;' : ''}">
                     <div class="change-header">
                         <div class="change-type" style="background:${cfg.color}20;color:${cfg.color};">
                             <span class="change-icon">${cfg.icon}</span>
@@ -144,7 +147,8 @@
                     <h2 class="change-title">${entry.title}</h2>
                     ${entry.description ? `<div class="change-description">${entry.description}</div>` : ''}
                     ${entry.version ? `<div class="change-tags"><span class="change-tag">v${entry.version}</span></div>` : ''}
-                </div>
+                    ${href ? `<div style="margin-top:14px;"><span style="font-size:13px;font-weight:600;color:var(--primary);">Read more →</span></div>` : ''}
+                </${tag}>
             `;
         }).join('');
     }
