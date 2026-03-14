@@ -15,11 +15,20 @@
 /robots.txt   /robots.txt        200
 /sitemap.xml  /sitemap.xml       200
 
-# ---- Changelog (Übersicht MUSS vor der [slug]-Function geschützt werden)
-/changelog        /changelog.html    200
-/changelog/       /changelog.html    200
+# ---- Changelog (Übersicht wird nativ von Cloudflare als changelog.html serviert)
+# /changelog und /changelog/ NICHT umschreiben – das verursacht eine Redirect-Schleife!
+# _routes.json exclude=[/changelog, /changelog/] schützt die Übersicht vor der Function.
 /changes          /changelog         301
 /changes.html     /changelog         301
+
+# ---- Statische HTML-Seiten explizit vor SPA-Fallback schützen
+/changelog        /changelog.html    200
+/changelog.html   /changelog.html    200
+/about            /about.html        200
+/about.html       /about.html        200
+/impressum        /impressum.html    200
+/datenschutz      /datenschutz.html  200
+/licenses         /licenses.html     200
 
 # ---- SPA Fallback (IMMER LETZTE REGEL!)
 /*            /index.html        200
