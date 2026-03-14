@@ -99,7 +99,6 @@ function renderHTML(entry, slug) {
 '    .entry-body a { color:var(--primary); text-decoration:none; }\n' +
 '    .entry-body a:hover { text-decoration:underline; }\n' +
 '    .entry-body code { background:var(--bg-elevated); border:1px solid var(--border); border-radius:4px; padding:2px 6px; font-size:0.9em; color:var(--primary); }\n' +
-'    .ad-slot { margin:28px 0; }\n' +
 '    .entry-nav { display:flex; gap:12px; flex-wrap:wrap; margin-top:40px; }\n' +
 '    .entry-nav-btn { display:inline-flex; align-items:center; gap:8px; padding:11px 22px; border-radius:10px; font-weight:600; font-size:14px; text-decoration:none; transition:all 0.25s ease; }\n' +
 '    .btn-changelog { background:var(--bg-card); border:1px solid var(--border); color:var(--text-secondary); }\n' +
@@ -141,12 +140,6 @@ function renderHTML(entry, slug) {
 '\n' +
 '  <h1 class="entry-title" itemprop="headline">' + esc(entry.title) + '</h1>\n' +
 '\n' +
-'  <div class="ad-slot">\n' +
-'    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3654554314003005"\n' +
-'         data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>\n' +
-'    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>\n' +
-'  </div>\n' +
-'\n' +
 '  <hr class="entry-divider">\n' +
 '\n' +
 '  <div class="entry-body" itemprop="articleBody">\n' +
@@ -154,12 +147,6 @@ function renderHTML(entry, slug) {
 '  </div>\n' +
 '\n' +
 '  <hr class="entry-divider">\n' +
-'\n' +
-'  <div class="ad-slot">\n' +
-'    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3654554314003005"\n' +
-'         data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>\n' +
-'    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>\n' +
-'  </div>\n' +
 '\n' +
 '  <nav class="entry-nav" aria-label="Page navigation">\n' +
 '    <a href="/changelog" class="entry-nav-btn btn-changelog">\n' +
