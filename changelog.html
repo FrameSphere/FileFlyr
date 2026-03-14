@@ -122,6 +122,21 @@
         return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     }
 
+    // Gleiche Logik wie im Worker – erzeugt Slug aus Titel als Fallback
+    function makeSlug(title) {
+        return String(title || '').toLowerCase()
+            .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss')
+            .replace(/[àâ]/g,'a').replace(/[éèêë]/g,'e').replace(/[îï]/g,'i')
+            .replace(/[ô]/g,'o').replace(/[ùû]/g,'u').replace(/ç/g,'c')
+            .replace(/[áà]/g,'a').replace(/[óò]/g,'o').replace(/[úù]/g,'u').replace(/ñ/g,'n')
+            .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,80) || String(Date.now());
+    }
+
+    function truncate(html, max) {
+        const text = html ? html.replace(/<[^>]*>/g, '') : '';
+        return text.length > max ? text.slice(0, max).replace(/\s+\S*$/, '') + '…' : text;
+    }
+
     function renderEntries(filter) {
         const filtered = filter === 'all' ? allEntries : allEntries.filter(e => e.type === filter);
 
@@ -131,12 +146,13 @@
         }
 
         container.innerHTML = filtered.map(entry => {
-            const cfg  = typeConfig[entry.type] || typeConfig.feature;
-            const href = entry.slug ? `/changelog/${entry.slug}` : null;
-            const tag  = href ? 'a' : 'div';
-            const attr = href ? `href="${href}"` : '';
+            const cfg     = typeConfig[entry.type] || typeConfig.feature;
+            // Slug: bevorzuge DB-Wert, generiere sonst aus Titel
+            const slug    = (entry.slug && entry.slug.trim()) ? entry.slug : makeSlug(entry.title);
+            const href    = `/changelog/${slug}`;
+            const preview = truncate(entry.description, 140);
             return `
-                <${tag} ${attr} class="change-entry" data-type="${entry.type}" style="${href ? 'display:block;text-decoration:none;color:inherit;' : ''}">
+                <a href="${href}" class="change-entry" data-type="${entry.type}" style="display:block;text-decoration:none;color:inherit;">
                     <div class="change-header">
                         <div class="change-type" style="background:${cfg.color}20;color:${cfg.color};">
                             <span class="change-icon">${cfg.icon}</span>
@@ -145,10 +161,10 @@
                         <div class="change-date">${formatDate(entry.created_at)}</div>
                     </div>
                     <h2 class="change-title">${entry.title}</h2>
-                    ${entry.description ? `<div class="change-description">${entry.description}</div>` : ''}
-                    ${entry.version ? `<div class="change-tags"><span class="change-tag">v${entry.version}</span></div>` : ''}
-                    ${href ? `<div style="margin-top:14px;"><span style="font-size:13px;font-weight:600;color:var(--primary);">Read more →</span></div>` : ''}
-                </${tag}>
+                    ${preview ? `<div class="change-description" style="color:var(--text-secondary);font-size:14px;line-height:1.6;margin-top:8px;">${preview}</div>` : ''}
+                    ${entry.version ? `<div class="change-tags" style="margin-top:12px;"><span class="change-tag">v${entry.version}</span></div>` : ''}
+                    <div style="margin-top:14px;"><span style="font-size:13px;font-weight:600;color:var(--primary);">Read more →</span></div>
+                </a>
             `;
         }).join('');
     }
