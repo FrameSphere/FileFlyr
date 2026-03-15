@@ -356,7 +356,7 @@ export async function onRequestGet({ params }) {
   return new Response(renderHTML(entry, slug), {
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+      'Cache-Control': 'public, max-age=600, s-maxage=600',
     },
   });
 }
