@@ -22,7 +22,7 @@ function esc(s) {
 
 function renderHTML(entry, slug) {
   const cfg         = TYPE_CONFIG[entry.type] || TYPE_CONFIG.feature;
-  const dateStr     = fmtDate(entry.created_at);
+  const dateStr     = fmtDate(entry.published_at || entry.created_at);
   const description = entry.description || entry.title;
   const plain       = description.replace(/<[^>]*>/g, '').slice(0, 160);
   const canonical   = 'https://fileflyr.com/changelog/' + (entry.slug || slug);
@@ -42,7 +42,7 @@ function renderHTML(entry, slug) {
 '  <meta property="og:url" content="' + canonical + '">\n' +
 '  <meta property="og:site_name" content="FileFlyr">\n' +
 '  <meta property="og:image" content="https://fileflyr.com/assets/favicon.svg">\n' +
-'  <meta property="article:published_time" content="' + entry.created_at + '">\n' +
+'  <meta property="article:published_time\" content=\"' + (entry.published_at || entry.created_at) + '\">' +
 '  <meta name="twitter:card" content="summary_large_image">\n' +
 '  <meta name="twitter:title" content="' + esc(entry.title) + ' \u2013 FileFlyr Changelog">\n' +
 '  <meta name="twitter:description" content="' + esc(plain) + '">\n' +
