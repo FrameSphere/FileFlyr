@@ -202,6 +202,100 @@ function renderHTML(entry, slug) {
 '  </div>\n' +
 '</footer>\n' +
 '\n' +
+'  <!-- Reaction Widget -->\n' +
+'  <div id="reaction-widget" style="max-width:820px;margin:0 auto;padding:0 24px 48px">\n' +
+'    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">\n' +
+'      <span style="font-size:13px;font-weight:600;color:var(--text-secondary);flex-shrink:0">React to this update:</span>\n' +
+'      <div id="reaction-btns" style="display:flex;gap:8px;flex-wrap:wrap">\n' +
+'        <button id="rb-fire"   onclick="react(\'fire\'  )" class="rbtn" data-r="fire"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDD25</span> <span id="rc-fire"  >0</span></button>\n' +
+'        <button id="rb-rocket" onclick="react(\'rocket\')" class="rbtn" data-r="rocket" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDE80</span> <span id="rc-rocket">0</span></button>\n' +
+'        <button id="rb-love"   onclick="react(\'love\'  )" class="rbtn" data-r="love"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\u2764\uFE0F</span> <span id="rc-love"  >0</span></button>\n' +
+'        <button id="rb-clap"   onclick="react(\'clap\'  )" class="rbtn" data-r="clap"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDC4F</span> <span id="rc-clap"  >0</span></button>\n' +
+'      </div>\n' +
+'      <span id="reaction-msg" style="font-size:12px;color:var(--text-tertiary);margin-left:auto"></span>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'  <script>\n' +
+'  (function(){\n' +
+'    var API="https://webcontrol-hq-api.karol-paschek.workers.dev";\n' +
+'    var SLUG="' + (entry.slug || slug) + '";\n' +
+'    var SID=localStorage.getItem("_ba_sid");\n' +
+'    if(!SID){SID=Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem("_ba_sid",SID);}\n' +
+'    var KEY="react_" + SLUG;\n' +
+'    var voted=localStorage.getItem(KEY);\n' +
+'\n' +
+'    // Load current counts\n' +
+'    fetch(API+"/api/changelog/reactions?site_id=fileflyr&slug="+encodeURIComponent(SLUG))\n' +
+'      .then(function(r){return r.json();})\n' +
+'      .then(function(d){\n' +
+'        ["fire","rocket","love","clap"].forEach(function(r){\n' +
+'          var el=document.getElementById("rc-"+r);\n' +
+'          if(el)el.textContent=d[r]||0;\n' +
+'        });\n' +
+'        if(voted){\n' +
+'          var btn=document.getElementById("rb-"+voted);\n' +
+'          if(btn)activateBtn(btn,voted);\n' +
+'          document.querySelectorAll(".rbtn").forEach(function(b){if(b.id!=="rb-"+voted)b.disabled=true;});\n' +
+'        }\n' +
+'      }).catch(function(){});\n' +
+'\n' +
+'    window.react=function(r){\n' +
+'      if(localStorage.getItem(KEY))return;\n' +
+'      localStorage.setItem(KEY,r);\n' +
+'      voted=r;\n' +
+'      // Optimistic update\n' +
+'      var el=document.getElementById("rc-"+r);\n' +
+'      if(el)el.textContent=parseInt(el.textContent||0)+1;\n' +
+'      activateBtn(document.getElementById("rb-"+r),r);\n' +
+'      document.querySelectorAll(".rbtn").forEach(function(b){if(b.id!=="rb-"+r)b.disabled=true;});\n' +
+'      document.getElementById("reaction-msg").textContent="Thanks! \uD83C\uDF89";\n' +
+'      fetch(API+"/api/changelog/reactions",{method:"POST",headers:{"Content-Type":"application/json"},\n' +
+'        body:JSON.stringify({site_id:"fileflyr",entry_slug:SLUG,reaction:r,session_id:SID})}).catch(function(){});\n' +
+'    };\n' +
+'\n' +
+'    function activateBtn(btn,r){\n' +
+'      if(!btn)return;\n' +
+'      var colors={fire:"rgba(239,68,68,.2)",rocket:"rgba(99,102,241,.2)",love:"rgba(239,68,68,.2)",clap:"rgba(245,158,11,.2)"};\n' +
+'      var borders={fire:"rgba(239,68,68,.5)",rocket:"rgba(99,102,241,.5)",love:"rgba(239,68,68,.5)",clap:"rgba(245,158,11,.5)"};\n' +
+'      var textc={fire:"#f87171",rocket:"#818cf8",love:"#f87171",clap:"#fbbf24"};\n' +
+'      btn.style.background=colors[r]||"rgba(99,102,241,.2)";\n' +
+'      btn.style.borderColor=borders[r]||"rgba(99,102,241,.5)";\n' +
+'      btn.style.color=textc[r]||"#818cf8";\n' +
+'      btn.style.transform="scale(1.05)";\n' +
+'    }\n' +
+'  })();\n' +
+'  </script>\n' +
+'  <!-- Analytics Tracking -->\n' +
+'  <script>\n' +
+'  (function(){\n' +
+'    var ANA="https://webcontrol-hq-api.karol-paschek.workers.dev/api/blog/analytics";\n' +
+'    var SID=localStorage.getItem("_ba_sid")||Math.random().toString(36).slice(2)+Date.now().toString(36);\n' +
+'    localStorage.setItem("_ba_sid",SID);\n' +
+'    var DEV=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)?"mobile":"desktop";\n' +
+'    var START=Date.now();var sent=false;\n' +
+'    fetch(ANA,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({\n' +
+'      site_id:"fileflyr",post_slug:"' + (entry.slug || slug) + '",lang:"en",\n' +
+'      event:"pageview",referrer:document.referrer||""  ,device:DEV,session_id:SID\n' +
+'    })}).catch(function(){});\n' +
+'    var maxScroll=0;var ms={25:false,50:false,75:false,100:false};\n' +
+'    function onScroll(){var el=document.querySelector(".entry-body");if(!el)return;\n' +
+'      var r=el.getBoundingClientRect();var p=Math.min(100,Math.round((window.innerHeight-r.top)/(r.height||1)*100));\n' +
+'      if(p>maxScroll)maxScroll=p;\n' +
+'      [25,50,75,100].forEach(function(m){if(!ms[m]&&maxScroll>=m){ms[m]=true;\n' +
+'        fetch(ANA,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({\n' +
+'          site_id:"fileflyr",post_slug:"' + (entry.slug || slug) + '",lang:"en",\n' +
+'          event:"scroll",scroll_depth:m,session_id:SID\n' +
+'        })}).catch(function(){});}});\n' +
+'    }\n' +
+'    window.addEventListener("scroll",onScroll,{passive:true});\n' +
+'    function sendTime(){if(sent)return;sent=true;var sec=Math.round((Date.now()-START)/1000);if(sec<2)return;\n' +
+'      navigator.sendBeacon(ANA,JSON.stringify({site_id:"fileflyr",post_slug:"' + (entry.slug || slug) + '",lang:"en",\n' +
+'        event:"leave",time_on_page:sec,scroll_depth:maxScroll,session_id:SID}));\n' +
+'    }\n' +
+'    window.addEventListener("pagehide",sendTime);window.addEventListener("beforeunload",sendTime);\n' +
+'    document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")sendTime();});\n' +
+'  })();\n' +
+'  </script>\n' +
 '</body>\n' +
 '</html>';
 }
