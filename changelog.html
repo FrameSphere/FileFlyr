@@ -158,7 +158,7 @@
                             <span class="change-icon">${cfg.icon}</span>
                             <span>${cfg.label}</span>
                         </div>
-                        <div class="change-date">${formatDate(entry.created_at)}</div>
+                        <div class="change-date">${formatDate(entry.published_at || entry.created_at)}</div>
                     </div>
                     <h2 class="change-title">${entry.title}</h2>
                     ${preview ? `<div class="change-description" style="color:var(--text-secondary);font-size:14px;line-height:1.6;margin-top:8px;">${preview}</div>` : ''}
