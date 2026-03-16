@@ -160,6 +160,19 @@ function renderHTML(entry, slug) {
 '  </nav>\n' +
 '\n' +
 '</article>\n' +
+'  <!-- Reaction Widget -->\n' +
+'  <div id="reaction-widget" style="max-width:820px;margin:0 auto;padding:0 24px 48px">\n' +
+'    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">\n' +
+'      <span style="font-size:13px;font-weight:600;color:var(--text-secondary);flex-shrink:0">React to this update:</span>\n' +
+'      <div id="reaction-btns" style="display:flex;gap:8px;flex-wrap:wrap">\n' +
+'        <button id="rb-fire"   onclick="react(\'fire\'  )" class="rbtn" data-r="fire"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDD25</span> <span id="rc-fire"  >0</span></button>\n' +
+'        <button id="rb-rocket" onclick="react(\'rocket\')" class="rbtn" data-r="rocket" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDE80</span> <span id="rc-rocket">0</span></button>\n' +
+'        <button id="rb-love"   onclick="react(\'love\'  )" class="rbtn" data-r="love"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\u2764\uFE0F</span> <span id="rc-love"  >0</span></button>\n' +
+'        <button id="rb-clap"   onclick="react(\'clap\'  )" class="rbtn" data-r="clap"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDC4F</span> <span id="rc-clap"  >0</span></button>\n' +
+'      </div>\n' +
+'      <span id="reaction-msg" style="font-size:12px;color:var(--text-tertiary);margin-left:auto"></span>\n' +
+'    </div>\n' +
+'  </div>\n' +
 '\n' +
 '<footer>\n' +
 '  <div class="footer-content">\n' +
@@ -202,19 +215,6 @@ function renderHTML(entry, slug) {
 '  </div>\n' +
 '</footer>\n' +
 '\n' +
-'  <!-- Reaction Widget -->\n' +
-'  <div id="reaction-widget" style="max-width:820px;margin:0 auto;padding:0 24px 48px">\n' +
-'    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">\n' +
-'      <span style="font-size:13px;font-weight:600;color:var(--text-secondary);flex-shrink:0">React to this update:</span>\n' +
-'      <div id="reaction-btns" style="display:flex;gap:8px;flex-wrap:wrap">\n' +
-'        <button id="rb-fire"   onclick="react(\'fire\'  )" class="rbtn" data-r="fire"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDD25</span> <span id="rc-fire"  >0</span></button>\n' +
-'        <button id="rb-rocket" onclick="react(\'rocket\')" class="rbtn" data-r="rocket" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDE80</span> <span id="rc-rocket">0</span></button>\n' +
-'        <button id="rb-love"   onclick="react(\'love\'  )" class="rbtn" data-r="love"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\u2764\uFE0F</span> <span id="rc-love"  >0</span></button>\n' +
-'        <button id="rb-clap"   onclick="react(\'clap\'  )" class="rbtn" data-r="clap"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDC4F</span> <span id="rc-clap"  >0</span></button>\n' +
-'      </div>\n' +
-'      <span id="reaction-msg" style="font-size:12px;color:var(--text-tertiary);margin-left:auto"></span>\n' +
-'    </div>\n' +
-'  </div>\n' +
 '  <script>\n' +
 '  (function(){\n' +
 '    var API="https://webcontrol-hq-api.karol-paschek.workers.dev";\n' +
