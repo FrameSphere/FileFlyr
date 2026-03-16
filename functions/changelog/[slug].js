@@ -160,15 +160,15 @@ function renderHTML(entry, slug) {
 '  </nav>\n' +
 '\n' +
 '</article>\n' +
-'  <!-- Reaction Widget -->\n' +
+'  <!-- Reaction Widget – anonymous (no counts shown to users) -->\n' +
 '  <div id="reaction-widget" style="max-width:820px;margin:0 auto;padding:0 24px 48px">\n' +
 '    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">\n' +
 '      <span style="font-size:13px;font-weight:600;color:var(--text-secondary);flex-shrink:0">React to this update:</span>\n' +
 '      <div id="reaction-btns" style="display:flex;gap:8px;flex-wrap:wrap">\n' +
-'        <button id="rb-fire"   onclick="react(\'fire\'  )" class="rbtn" data-r="fire"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDD25</span> <span id="rc-fire"  >0</span></button>\n' +
-'        <button id="rb-rocket" onclick="react(\'rocket\')" class="rbtn" data-r="rocket" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDE80</span> <span id="rc-rocket">0</span></button>\n' +
-'        <button id="rb-love"   onclick="react(\'love\'  )" class="rbtn" data-r="love"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\u2764\uFE0F</span> <span id="rc-love"  >0</span></button>\n' +
-'        <button id="rb-clap"   onclick="react(\'clap\'  )" class="rbtn" data-r="clap"   style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:inherit;transition:all .2s"><span>\uD83D\uDC4F</span> <span id="rc-clap"  >0</span></button>\n' +
+'        <button id="rb-fire"   onclick="react(\'fire\'  )" class="rbtn" data-r="fire"   style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:transparent;cursor:pointer;font-size:22px;font-family:inherit;transition:all .2s" title="Fire">\uD83D\uDD25</button>\n' +
+'        <button id="rb-rocket" onclick="react(\'rocket\')" class="rbtn" data-r="rocket" style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:transparent;cursor:pointer;font-size:22px;font-family:inherit;transition:all .2s" title="Rocket">\uD83D\uDE80</button>\n' +
+'        <button id="rb-love"   onclick="react(\'love\'  )" class="rbtn" data-r="love"   style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:transparent;cursor:pointer;font-size:22px;font-family:inherit;transition:all .2s" title="Love">\u2764\uFE0F</button>\n' +
+'        <button id="rb-clap"   onclick="react(\'clap\'  )" class="rbtn" data-r="clap"   style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:transparent;cursor:pointer;font-size:22px;font-family:inherit;transition:all .2s" title="Clap">\uD83D\uDC4F</button>\n' +
 '      </div>\n' +
 '      <span id="reaction-msg" style="font-size:12px;color:var(--text-tertiary);margin-left:auto"></span>\n' +
 '    </div>\n' +
@@ -224,44 +224,34 @@ function renderHTML(entry, slug) {
 '    var KEY="react_" + SLUG;\n' +
 '    var voted=localStorage.getItem(KEY);\n' +
 '\n' +
-'    // Load current counts\n' +
-'    fetch(API+"/api/changelog/reactions?site_id=fileflyr&slug="+encodeURIComponent(SLUG))\n' +
-'      .then(function(r){return r.json();})\n' +
-'      .then(function(d){\n' +
-'        ["fire","rocket","love","clap"].forEach(function(r){\n' +
-'          var el=document.getElementById("rc-"+r);\n' +
-'          if(el)el.textContent=d[r]||0;\n' +
-'        });\n' +
-'        if(voted){\n' +
-'          var btn=document.getElementById("rb-"+voted);\n' +
-'          if(btn)activateBtn(btn,voted);\n' +
-'          document.querySelectorAll(".rbtn").forEach(function(b){if(b.id!=="rb-"+voted)b.disabled=true;});\n' +
-'        }\n' +
-'      }).catch(function(){});\n' +
+'    // Restore voted state (no count fetch – fully anonymous)\n' +
+'    if(voted){\n' +
+'      var prevBtn=document.getElementById("rb-"+voted);\n' +
+'      if(prevBtn)activateBtn(prevBtn,voted);\n' +
+'      document.querySelectorAll(".rbtn").forEach(function(b){b.disabled=true;});\n' +
+'      document.getElementById("reaction-msg").textContent="You already reacted \u2714";\n' +
+'    }\n' +
 '\n' +
 '    window.react=function(r){\n' +
 '      if(localStorage.getItem(KEY))return;\n' +
 '      localStorage.setItem(KEY,r);\n' +
 '      voted=r;\n' +
-'      // Optimistic update\n' +
-'      var el=document.getElementById("rc-"+r);\n' +
-'      if(el)el.textContent=parseInt(el.textContent||0)+1;\n' +
 '      activateBtn(document.getElementById("rb-"+r),r);\n' +
-'      document.querySelectorAll(".rbtn").forEach(function(b){if(b.id!=="rb-"+r)b.disabled=true;});\n' +
+'      document.querySelectorAll(".rbtn").forEach(function(b){b.disabled=true;});\n' +
 '      document.getElementById("reaction-msg").textContent="Thanks! \uD83C\uDF89";\n' +
+'      // Send to Manager analytics (stored server-side, not shown to users)\n' +
 '      fetch(API+"/api/changelog/reactions",{method:"POST",headers:{"Content-Type":"application/json"},\n' +
 '        body:JSON.stringify({site_id:"fileflyr",entry_slug:SLUG,reaction:r,session_id:SID})}).catch(function(){});\n' +
 '    };\n' +
 '\n' +
 '    function activateBtn(btn,r){\n' +
 '      if(!btn)return;\n' +
-'      var colors={fire:"rgba(239,68,68,.2)",rocket:"rgba(99,102,241,.2)",love:"rgba(239,68,68,.2)",clap:"rgba(245,158,11,.2)"};\n' +
+'      var colors={fire:"rgba(239,68,68,.18)",rocket:"rgba(99,102,241,.18)",love:"rgba(239,68,68,.18)",clap:"rgba(245,158,11,.18)"};\n' +
 '      var borders={fire:"rgba(239,68,68,.5)",rocket:"rgba(99,102,241,.5)",love:"rgba(239,68,68,.5)",clap:"rgba(245,158,11,.5)"};\n' +
-'      var textc={fire:"#f87171",rocket:"#818cf8",love:"#f87171",clap:"#fbbf24"};\n' +
-'      btn.style.background=colors[r]||"rgba(99,102,241,.2)";\n' +
+'      btn.style.background=colors[r]||"rgba(99,102,241,.18)";\n' +
 '      btn.style.borderColor=borders[r]||"rgba(99,102,241,.5)";\n' +
-'      btn.style.color=textc[r]||"#818cf8";\n' +
-'      btn.style.transform="scale(1.05)";\n' +
+'      btn.style.transform="scale(1.12)";\n' +
+'      btn.style.boxShadow="0 0 0 2px "+(borders[r]||"rgba(99,102,241,.5)");\n' +
 '    }\n' +
 '  })();\n' +
 '  </script>\n' +
