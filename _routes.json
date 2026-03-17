@@ -1,5 +1,5 @@
 {
   "version": 1,
-  "include": ["/changelog/*"],
+  "include": ["/changelog/*", "/sitemap.xml"],
   "exclude": ["/changelog", "/changelog/"]
 }

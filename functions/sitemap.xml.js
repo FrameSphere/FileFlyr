@@ -31,13 +31,13 @@ const STATIC_URLS = `
   <url><loc>${BASE}/convert/txt-to-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>`;
 
 export async function onRequestGet() {
+  const today = new Date().toISOString().slice(0, 10);
+
   let entries = [];
   try {
     const res = await fetch(`${API}/api/changelog/published?site_id=${SITE_ID}`);
     if (res.ok) entries = await res.json();
   } catch(_) {}
-
-  const today = new Date().toISOString().slice(0, 10);
 
   const changelogUrls = entries.map(e => {
     const slug = e.slug || e.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
