@@ -15,6 +15,10 @@
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .change-entry { position: relative; }
+        .cl-new-badge { position: absolute; top: -1px; right: -1px; background: var(--primary, #6366f1); color: #fff; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 0 10px 0 8px; letter-spacing: .05em; line-height: 1.6; box-shadow: 0 2px 6px rgba(99,102,241,0.4); }
+    </style>
 </head>
 <body>
 
@@ -32,14 +36,13 @@
         <h1 style="text-align:center">Changelog & Updates</h1>
         <p class="subtitle" style="text-align:center">Latest features, improvements, and new converters</p>
 
-        <!-- Filter Buttons -->
-        <div class="changes-filters">
-            <button class="filter-btn active" data-type="all">All Updates</button>
-            <button class="filter-btn" data-type="feature">Features</button>
-            <button class="filter-btn" data-type="converter">Converters</button>
-            <button class="filter-btn" data-type="improvement">Improvements</button>
-            <button class="filter-btn" data-type="bugfix">Bugfixes</button>
-            <button class="filter-btn" data-type="content">Content</button>
+        <!-- Suche -->
+        <div style="margin: 20px 0;">
+            <input id="cl-search" type="search" autocomplete="off"
+                   placeholder="Search updates…"
+                   style="width:100%;padding:10px 16px;border-radius:10px;border:1px solid var(--border-color,#333);background:var(--bg-secondary,#1a1a2e);color:var(--text-primary,#e4e4e7);font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color .2s;"
+                   onfocus="this.style.borderColor='var(--primary,#6366f1)'"
+                   onblur="this.style.borderColor='var(--border-color,#333)'">
         </div>
 
         <!-- Changes will be loaded here -->
@@ -104,7 +107,6 @@
     const SITE_ID = 'fileflyr';
 
     const container = document.getElementById('changesContainer');
-    const filterButtons = document.querySelectorAll('.filter-btn');
 
     const typeConfig = {
         feature:     { icon: '🚀', color: '#6366f1', label: 'New Feature' },
@@ -115,7 +117,7 @@
     };
 
     let allEntries = [];
-    let currentFilter = 'all';
+    let currentSearch = '';
 
     function formatDate(dateStr) {
         const date = new Date(dateStr);
@@ -137,8 +139,15 @@
         return text.length > max ? text.slice(0, max).replace(/\s+\S*$/, '') + '…' : text;
     }
 
-    function renderEntries(filter) {
-        const filtered = filter === 'all' ? allEntries : allEntries.filter(e => e.type === filter);
+    function renderEntries(query) {
+        const q = (query || '').toLowerCase().trim();
+        const newestId = allEntries.length ? allEntries.reduce((a, b) =>
+            new Date(b.published_at || b.created_at) > new Date(a.published_at || a.created_at) ? b : a
+        ).id : null;
+        const filtered = !q ? allEntries : allEntries.filter(e =>
+            (e.title || '').toLowerCase().includes(q) ||
+            (e.description || '').replace(/<[^>]*>/g,'').toLowerCase().includes(q)
+        );
 
         if (filtered.length === 0) {
             container.innerHTML = '<div style="text-align:center;padding:48px;color:var(--text-secondary,#888)">No updates yet.</div>';
@@ -153,6 +162,7 @@
             const preview = truncate(entry.description, 140);
             return `
                 <a href="${href}" class="change-entry" data-type="${entry.type}" style="display:block;text-decoration:none;color:inherit;">
+                    ${entry.id === newestId ? '<span class="cl-new-badge">NEW</span>' : ''}
                     <div class="change-header">
                         <div class="change-type" style="background:${cfg.color}20;color:${cfg.color};">
                             <span class="change-icon">${cfg.icon}</span>
@@ -174,19 +184,15 @@
             const res = await fetch(`${HQ_API}/api/changelog/published?site_id=${SITE_ID}`);
             if (!res.ok) throw new Error('API error ' + res.status);
             allEntries = await res.json();
-            renderEntries(currentFilter);
+            renderEntries(currentSearch);
         } catch (e) {
             container.innerHTML = '<div style="text-align:center;padding:48px;color:var(--text-secondary,#888)">Could not load updates. Please try again later.</div>';
         }
     }
 
-    filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentFilter = btn.dataset.type;
-            renderEntries(currentFilter);
-        });
+    document.getElementById('cl-search').addEventListener('input', function() {
+        currentSearch = this.value;
+        renderEntries(currentSearch);
     });
 
     loadChangelog();
