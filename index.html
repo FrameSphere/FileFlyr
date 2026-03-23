@@ -147,43 +147,53 @@
         </section>
 
         <!-- Changelog Bubble -->
-        <div id="changelog-bubble-wrap" style="display:none;text-align:center;padding:0 16px 4px;margin-top:-8px">
+        <style>
+          @keyframes ff-float {
+            0%,100% { transform: translateY(0px); }
+            50%      { transform: translateY(-5px); }
+          }
+          #changelog-bubble-wrap { animation: ff-float 3.6s ease-in-out infinite; }
+          #changelog-bubble-wrap:hover { animation-play-state: paused; }
+        </style>
+        <div id="changelog-bubble-wrap" style="display:none;text-align:center;padding:8px 16px 16px;">
             <a id="changelog-bubble" href="/changelog" style="
-                display:inline-flex;align-items:center;gap:8px;
-                background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.12));
-                border:1px solid rgba(99,102,241,.35);
+                display:inline-flex;align-items:center;gap:10px;
+                background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(139,92,246,.14));
+                border:1px solid rgba(99,102,241,.4);
                 border-radius:999px;
-                padding:7px 16px 7px 10px;
+                padding:10px 20px 10px 12px;
                 text-decoration:none;
                 color:inherit;
-                font-size:13px;
+                font-size:15px;
                 font-weight:500;
-                max-width:560px;
-                transition:background .2s,border-color .2s,transform .15s;
+                max-width:620px;
+                box-shadow:0 4px 24px rgba(99,102,241,.18),0 1px 4px rgba(0,0,0,.12);
+                transition:background .2s,border-color .2s,box-shadow .2s,transform .15s;
                 cursor:pointer;
             "
-            onmouseover="this.style.background='linear-gradient(135deg,rgba(99,102,241,.22),rgba(139,92,246,.2))';this.style.borderColor='rgba(99,102,241,.6)';this.style.transform='translateY(-1px)'"
-            onmouseout="this.style.background='linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.12))';this.style.borderColor='rgba(99,102,241,.35)';this.style.transform=''"
+            onmouseover="this.style.background='linear-gradient(135deg,rgba(99,102,241,.26),rgba(139,92,246,.22))';this.style.borderColor='rgba(99,102,241,.65)';this.style.boxShadow='0 6px 32px rgba(99,102,241,.28),0 2px 8px rgba(0,0,0,.15)';this.style.transform='translateY(-2px)'"
+            onmouseout="this.style.background='linear-gradient(135deg,rgba(99,102,241,.18),rgba(139,92,246,.14))';this.style.borderColor='rgba(99,102,241,.4)';this.style.boxShadow='0 4px 24px rgba(99,102,241,.18),0 1px 4px rgba(0,0,0,.12)';this.style.transform=''"
             >
                 <span style="
                     background:linear-gradient(135deg,#6366f1,#a855f7);
                     color:#fff;
                     border-radius:999px;
-                    padding:2px 9px;
-                    font-size:11px;
+                    padding:3px 11px;
+                    font-size:12px;
                     font-weight:700;
-                    letter-spacing:.04em;
+                    letter-spacing:.05em;
                     white-space:nowrap;
                     flex-shrink:0;
+                    box-shadow:0 2px 8px rgba(99,102,241,.35);
                 ">NEW</span>
                 <span id="changelog-bubble-title" style="
                     color:var(--text-secondary,#cbd5e1);
                     white-space:nowrap;
                     overflow:hidden;
                     text-overflow:ellipsis;
-                    max-width:380px;
+                    max-width:420px;
                 "></span>
-                <svg style="flex-shrink:0;opacity:.6" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                <svg style="flex-shrink:0;opacity:.7" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
             </a>
         </div>
         <script>
@@ -193,7 +203,6 @@
                 .then(function(r){return r.json();})
                 .then(function(entries){
                     if(!Array.isArray(entries)||!entries.length)return;
-                    // Sort by published_at desc, take newest
                     entries.sort(function(a,b){
                         return (b.published_at||b.created_at||'').localeCompare(a.published_at||a.created_at||'');
                     });
@@ -203,7 +212,10 @@
                     var wrap=document.getElementById('changelog-bubble-wrap');
                     var link=document.getElementById('changelog-bubble');
                     if(titleEl)titleEl.textContent=newest.title;
-                    if(newest.slug)link.href='/changelog#'+newest.slug;
+                    // Link direkt zur Changelog-Detailseite via slug
+                    if(newest.slug){
+                        link.href='/changelog/'+newest.slug;
+                    }
                     if(wrap)wrap.style.display='block';
                 }).catch(function(){});
         })();
