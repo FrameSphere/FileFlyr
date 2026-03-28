@@ -26,5 +26,12 @@
 # ── Converter pages: without trailing slash → canonical redirect ────
 /convert/:slug   /convert/:slug/  301
 
+# ── Statische HTML-Seiten: Direkt ausliefern (.html-Links absichern) ────
+/impressum.html    /impressum.html    200
+/datenschutz.html  /datenschutz.html  200
+/licenses.html     /licenses.html     200
+/about.html        /about.html        200
+/changelog.html    /changelog.html    200
+
 # ── SPA fallback for everything that has no static file ────────────
 /*           /index.html      200
