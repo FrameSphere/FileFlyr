@@ -68,10 +68,10 @@
             <div class="footer-links">
                 <div class="footer-column">
                     <h4>Popular Tools</h4>
-                    <a href="/convert/png-to-jpg">PNG to JPG</a>
-                    <a href="/convert/jpg-to-png">JPG to PNG</a>
-                    <a href="/convert/heic-to-jpg">HEIC to JPG</a>
-                    <a href="/convert/img-to-pdf">Image to PDF</a>
+                    <a href="/convert/png-to-jpg/">PNG to JPG</a>
+                    <a href="/convert/jpg-to-png/">JPG to PNG</a>
+                    <a href="/convert/heic-to-jpg/">HEIC to JPG</a>
+                    <a href="/convert/img-to-pdf/">Image to PDF</a>
                 </div>
                 <div class="footer-column">
                     <h4>Resources</h4>
@@ -124,7 +124,6 @@
         return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     }
 
-    // Gleiche Logik wie im Worker – erzeugt Slug aus Titel als Fallback
     function makeSlug(title) {
         return String(title || '').toLowerCase()
             .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss')
@@ -156,7 +155,6 @@
 
         container.innerHTML = filtered.map(entry => {
             const cfg     = typeConfig[entry.type] || typeConfig.feature;
-            // Slug: bevorzuge DB-Wert, generiere sonst aus Titel
             const slug    = (entry.slug && entry.slug.trim()) ? entry.slug : makeSlug(entry.title);
             const href    = `/changelog/${slug}`;
             const preview = truncate(entry.description, 140);

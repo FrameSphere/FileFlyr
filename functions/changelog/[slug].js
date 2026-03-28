@@ -25,7 +25,7 @@ function renderHTML(entry, slug) {
   const dateStr     = fmtDate(entry.published_at || entry.created_at);
   const description = entry.description || entry.title;
   const plain       = description.replace(/<[^>]*>/g, '').slice(0, 160);
-  const canonical   = 'https://fileflyr.com/changelog/' + (entry.slug || slug);
+  const canonical   = 'https://fileflyr.pages.dev/changelog/' + (entry.slug || slug);
 
   return '<!DOCTYPE html>\n' +
 '<html lang="en">\n' +
@@ -41,7 +41,7 @@ function renderHTML(entry, slug) {
 '  <meta property="og:description" content="' + esc(plain) + '">\n' +
 '  <meta property="og:url" content="' + canonical + '">\n' +
 '  <meta property="og:site_name" content="FileFlyr">\n' +
-'  <meta property="og:image" content="https://fileflyr.com/assets/favicon.svg">\n' +
+'  <meta property="og:image" content="https://fileflyr.pages.dev/assets/favicon.svg">\n' +
 '  <meta property="article:published_time\" content=\"' + (entry.published_at || entry.created_at) + '\">' +
 '  <meta name="twitter:card" content="summary_large_image">\n' +
 '  <meta name="twitter:title" content="' + esc(entry.title) + ' \u2013 FileFlyr Changelog">\n' +
@@ -55,10 +55,10 @@ function renderHTML(entry, slug) {
 '    "datePublished": "' + entry.created_at + '",\n' +
 '    "dateModified": "' + entry.created_at + '",\n' +
 '    "author": { "@type": "Organization", "name": "FileFlyr" },\n' +
-'    "publisher": { "@type": "Organization", "name": "FileFlyr", "url": "https://fileflyr.com" },\n' +
+'    "publisher": { "@type": "Organization", "name": "FileFlyr", "url": "https://fileflyr.pages.dev" },\n' +
 '    "url": "' + canonical + '",\n' +
 '    "inLanguage": "en",\n' +
-'    "image": "https://fileflyr.com/assets/favicon.svg",\n' +
+'    "image": "https://fileflyr.pages.dev/assets/favicon.svg",\n' +
 '    "mainEntityOfPage": { "@type": "WebPage", "@id": "' + canonical + '" }\n' +
 '  }\n' +
 '  </script>\n' +
@@ -67,8 +67,8 @@ function renderHTML(entry, slug) {
 '    "@context": "https://schema.org",\n' +
 '    "@type": "BreadcrumbList",\n' +
 '    "itemListElement": [\n' +
-'      { "@type": "ListItem", "position": 1, "name": "FileFlyr", "item": "https://fileflyr.com/" },\n' +
-'      { "@type": "ListItem", "position": 2, "name": "Changelog", "item": "https://fileflyr.com/changelog" },\n' +
+'      { "@type": "ListItem", "position": 1, "name": "FileFlyr", "item": "https://fileflyr.pages.dev/" },\n' +
+'      { "@type": "ListItem", "position": 2, "name": "Changelog", "item": "https://fileflyr.pages.dev/changelog" },\n' +
 '      { "@type": "ListItem", "position": 3, "name": ' + JSON.stringify(entry.title) + ', "item": "' + canonical + '" }\n' +
 '    ]\n' +
 '  }\n' +

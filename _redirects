@@ -1,32 +1,30 @@
 # ===============================
 # Cloudflare Pages Redirects
-# SPA + Static Pages (FIXED)
 # ===============================
 
-# ---- Static assets (immer direkt ausliefern)
+# ── Static assets (immer direkt ausliefern) ────────────────────────
 /css/*        /css/:splat        200
 /js/*         /js/:splat         200
 /assets/*     /assets/:splat     200
 
-# ---- Ads.txt
+# ── Ads.txt / Robots / Sitemap ─────────────────────────────────────
 /ads.txt      /ads.txt           200
-
-# ---- Robots & Sitemap
 /robots.txt   /robots.txt        200
 /sitemap.xml  /sitemap.xml       200
 
-# ---- Aliases
-/changes          /changelog         301
-/changes.html     /changelog         301
+# ── Aliases: /changes → changelog ─────────────────────────────────
+/changes      /changes.html      200
 
-# ---- Statische HTML-Seiten vor SPA-Fallback sichern
-# WICHTIG: Kein Rewrite auf /changelog oder /changelog.html –
-# Cloudflare Pages serviert changelog.html nativ unter /changelog!
-# Ein 200-Rewrite hier würde eine interne Loop auslösen.
-/about            /about.html        200
-/impressum        /impressum.html    200
-/datenschutz      /datenschutz.html  200
-/licenses         /licenses.html     200
+# ── Statische HTML-Seiten: Clean-URL-Support ───────────────────────
+/about        /about.html        200
+/impressum    /impressum.html    200
+/datenschutz  /datenschutz.html  200
+/licenses     /licenses.html     200
+# /changelog wird von Cloudflare Pages nativ als changelog.html ausgeliefert
+# KEIN Rewrite nötig – würde eine interne Redirect-Loop auslösen!
 
-# ---- SPA Fallback (IMMER LETZTE REGEL!)
-/*            /index.html        200
+# ── Converter pages: without trailing slash → canonical redirect ────
+/convert/:slug   /convert/:slug/  301
+
+# ── SPA fallback for everything that has no static file ────────────
+/*           /index.html      200
