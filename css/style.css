@@ -392,118 +392,6 @@ nav a:hover::after {
     color: var(--text-secondary);
 }
 
-/* =================================================================
-   Ad Container - Google AdSense Optimized
-   ================================================================= */
-
-.ad-container {
-    max-width: 1400px;
-    margin: var(--spacing-3xl) auto;
-    padding: 0 var(--spacing-lg);
-}
-
-.ad-placeholder {
-    background: var(--bg-card);
-    border: 1px dashed var(--border);
-    border-radius: 12px;
-    padding: var(--spacing-xl) var(--spacing-lg);
-    text-align: center;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    transition: all 0.3s ease;
-}
-
-.ad-placeholder:hover {
-    border-color: var(--border-hover);
-    background: var(--bg-hover);
-}
-
-.ad-label {
-    display: inline-block;
-    padding: 4px 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
-    font-size: 10px;
-    color: var(--text-tertiary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.ad-placeholder-content {
-    color: var(--text-tertiary);
-    font-size: 12px;
-    font-weight: 500;
-    opacity: 0.6;
-}
-
-/* Responsive Ad Size Labels */
-.mobile-ad {
-    display: none;
-}
-
-.desktop-ad {
-    display: inline;
-}
-
-/* Leaderboard (728x90 Desktop / 320x50 Mobile) */
-.ad-leaderboard {
-    min-height: 110px;
-    max-width: 750px;
-    margin: 0 auto;
-}
-
-/* Medium Rectangle (300x250) - Universal */
-.ad-medium-rectangle {
-    min-height: 270px;
-    max-width: 320px;
-    margin: 0 auto;
-}
-
-/* Large Rectangle (336x280) - Post Conversion */
-.ad-large-rectangle {
-    min-height: 300px;
-    max-width: 360px;
-    margin: 0 auto;
-}
-
-/* Top Banner Placement */
-.ad-top-banner {
-    margin-top: var(--spacing-xl);
-    margin-bottom: var(--spacing-lg);
-}
-
-/* Mid Content Placement */
-.ad-mid-content {
-    margin: var(--spacing-3xl) auto;
-}
-
-/* Bottom Banner Placement */
-.ad-bottom-banner {
-    margin: var(--spacing-3xl) auto var(--spacing-2xl);
-}
-
-/* Post Conversion Ad */
-.ad-post-conversion {
-    margin-top: var(--spacing-2xl);
-}
-
-/* Wide Skyscraper (160x600) - Desktop Sidebar (NICHT FIXIERT - AdSense Compliance) */
-.ad-sidebar {
-    display: none; /* Deaktiviert wegen AdSense-Richtlinien (keine fixed/sticky Ads erlaubt) */
-    /* Alternative: Als normale Ad nach Content platzieren */
-}
-
-.ad-sidebar-content {
-    min-height: 620px;
-    width: 100%;
-    padding: var(--spacing-md);
-    max-width: 180px;
-    margin: var(--spacing-xl) auto;
-}
 
 /* =================================================================
    How It Works
@@ -1070,28 +958,6 @@ footer {
     /* Sidebar ist bereits deaktiviert (siehe oben) */
 }
 
-@media (max-width: 900px) {
-    /* Switch to mobile ad sizes */
-    .desktop-ad {
-        display: none;
-    }
-    
-    .mobile-ad {
-        display: inline;
-    }
-    
-    /* Adjust leaderboard for mobile */
-    .ad-leaderboard {
-        min-height: 70px;
-        max-width: 340px;
-    }
-    
-    /* Adjust containers for mobile */
-    .ad-top-banner,
-    .ad-bottom-banner {
-        padding: 0 var(--spacing-md);
-    }
-}
 
 @media (max-width: 768px) {
     .hero {
@@ -1134,30 +1000,6 @@ footer {
     
     .options-grid {
         grid-template-columns: 1fr;
-    }
-    
-    /* Mobile ad adjustments */
-    .ad-leaderboard {
-        min-height: 70px;
-        max-width: 100%;
-    }
-    
-    .ad-medium-rectangle,
-    .ad-large-rectangle {
-        min-height: 270px;
-        max-width: 100%;
-    }
-    
-    .ad-container {
-        margin: var(--spacing-lg) auto;
-        padding: 0 var(--spacing-md);
-    }
-    
-    .ad-top-banner,
-    .ad-bottom-banner,
-    .ad-mid-content {
-        margin-top: var(--spacing-lg);
-        margin-bottom: var(--spacing-lg);
     }
 }
 
