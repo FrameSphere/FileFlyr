@@ -15,23 +15,13 @@
 # ── Aliases: /changes → changelog ─────────────────────────────────
 /changes      /changes.html      200
 
-# ── Statische HTML-Seiten: Clean-URL-Support ───────────────────────
-/about        /about.html        200
-/impressum    /impressum.html    200
-/datenschutz  /datenschutz.html  200
-/licenses     /licenses.html     200
-# /changelog wird von Cloudflare Pages nativ als changelog.html ausgeliefert
-# KEIN Rewrite nötig – würde eine interne Redirect-Loop auslösen!
-
 # ── Converter pages: without trailing slash → canonical redirect ────
 /convert/:slug   /convert/:slug/  301
 
-# ── Statische HTML-Seiten: Direkt ausliefern (.html-Links absichern) ────
-/impressum.html    /impressum.html    200
-/datenschutz.html  /datenschutz.html  200
-/licenses.html     /licenses.html     200
-/about.html        /about.html        200
-/changelog.html    /changelog.html    200
+# HINWEIS: /impressum, /datenschutz, /licenses, /about, /changelog
+# werden von Cloudflare Pages NATIV als Clean-URLs aus den .html-Dateien
+# ausgeliefert. Manuelle Rewrite-Regeln hier würden eine Redirect-Loop
+# verursachen (Rewrite → .html → Cloudflare Clean-URL-Redirect → Loop)!
 
 # ── SPA fallback for everything that has no static file ────────────
 /*           /index.html      200
