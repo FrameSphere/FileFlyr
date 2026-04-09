@@ -40,9 +40,24 @@ export async function init() {
         </div>
         <div class="option">
             <label for="bgColor">Background Color</label>
-            <input type="color" id="bgColor" value="#ffffff">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <input type="color" id="bgColor" value="#ffffff">
+                <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;">
+                    <input type="checkbox" id="bgTransparent">
+                    Transparent
+                </label>
+            </div>
         </div>
     `;
+
+    // Toggle color picker when transparent is checked
+    const bgTransparentCheckbox = document.getElementById('bgTransparent');
+    const bgColorInput = document.getElementById('bgColor');
+
+    bgTransparentCheckbox.addEventListener('change', () => {
+        bgColorInput.disabled = bgTransparentCheckbox.checked;
+        bgColorInput.style.opacity = bgTransparentCheckbox.checked ? '0.3' : '1';
+    });
 
     convertBtn.textContent = 'Convert to PNG';
 
@@ -110,7 +125,8 @@ export async function init() {
         const width = parseInt(document.getElementById('width').value);
         const height = parseInt(document.getElementById('height').value);
         const keepAspect = document.getElementById('keepAspect').checked;
-        const bgColor = document.getElementById('bgColor').value;
+        const transparent = document.getElementById('bgTransparent').checked;
+        const bgColor = transparent ? null : document.getElementById('bgColor').value;
         
         const convertedFiles = [];
 
@@ -179,8 +195,12 @@ export async function init() {
                     canvas.height = finalHeight;
                     const ctx = canvas.getContext('2d');
 
-                    ctx.fillStyle = bgColor;
-                    ctx.fillRect(0, 0, finalWidth, finalHeight);
+                    // Only fill background if not transparent
+                    if (bgColor !== null) {
+                        ctx.fillStyle = bgColor;
+                        ctx.fillRect(0, 0, finalWidth, finalHeight);
+                    }
+
                     ctx.drawImage(img, 0, 0, finalWidth, finalHeight);
 
                     canvas.toBlob((blob) => {
